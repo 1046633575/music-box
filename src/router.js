@@ -18,10 +18,17 @@ export default new Router({
       }
     },
     {
+      path: '/main',
+      components: {
+        default: Nav,
+        'link': Main
+      }
+    },
+    {
       path: '/rank',
       components: {
         default: Nav,
-        'link': Rank
+        'link': Main
       }
     }
   ]

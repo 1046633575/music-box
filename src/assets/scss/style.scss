@@ -36,6 +36,11 @@ input{
   height: 100%;
 }
 
+.mint-swipe-indicators .mint-swipe-indicator.is-active{
+  background: #E20000;
+  opacity: 1;
+}
+
 //border-radius
 .b-radius-6{
   border-radius: 6px;

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <footer class="d-flex jc-between ai-center px-1">
-      <audio id="audio" v-show="false" src="http://m10.music.126.net/20190629153145/4e387577cb7d314369becca1e5d94e91/ymusic/b7e8/df03/e357/cfb42de2491eea63cb68331a3c61fe5b.mp3"></audio>
+      <audio id="audio" ref="audio" v-show="false" src="http://m10.music.126.net/20190629153145/4e387577cb7d314369becca1e5d94e91/ymusic/b7e8/df03/e357/cfb42de2491eea63cb68331a3c61fe5b.mp3"></audio>
       <div class="footer-left d-flex jc-center ai-center">
         <img src="../assets/image/music.png" alt="" class="b-radius-50">
       </div>
