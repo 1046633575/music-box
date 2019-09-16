@@ -1,0 +1,134 @@
+@import './variables.scss';
+//reset
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+}
+html,body{
+  width: 100%;
+  height: 100%;
+  background-color: #ccc;
+  font-size: 14px;
+}
+
+//colors
+@each $colorKey,$color in $colors{
+  .text-#{$colorKey}{
+    color: $color;
+  }
+}
+@each $colorKey,$color in $colors{
+  .bg-#{$colorKey}{
+    background-color: $color;
+  }
+}
+
+//width,height
+.w-100{
+  width: 100%;
+}
+.h-100{
+  height: 100%;
+}
+
+//border-radius
+.b-radius-50{
+  border-radius: 50%;
+}
+
+//text
+@each $var in (left,right,center){
+  .text-#{$var}{
+    text-align: $var !important;
+  }
+}
+
+//font size
+@each $sizeKey,$size in $font-sizes {
+  .fs-#{$sizeKey}{
+    font-size: $size * $base-font-size;
+  }
+}
+
+//text overflow
+.text-ellipsis-1 {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.text-ellipsis-2 {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+//flex
+.d-flex{
+  display: flex;
+}
+.flex-column{
+  flex-direction: column;
+}
+.flex-wrap{
+  flex-wrap: wrap;
+}
+.flex-1{
+  flex: 1;
+}
+.flex-grow-1{
+  flex-grow: 1;
+}
+@each $key,$value in $flex-jc {
+  .jc-#{$key}{
+    justify-content: $value;
+  }
+}
+@each $key,$value in $flex-ai {
+  .ai-#{$key}{
+    align-items: $value;
+  }
+}
+
+//margin padding
+@each $typeKey,$type in $spacing-types {
+
+  //mt-1 { margin-top: 0.25rem }
+  @each $directionKey,$direction in $spacing-directions{
+    @each $sizeKey,$size in $spacing-sizes{
+      .#{$typeKey}#{$directionKey}-#{$sizeKey}{
+        #{$type}-#{$direction} : $size * $spacing-base-size;
+      }
+    }
+  }
+
+  //m-1 { margin: 0.25rem }
+  @each $sizeKey,$size in $spacing-sizes{
+    .#{$typeKey}-#{$sizeKey}{
+      #{$type} : $size * $spacing-base-size;
+    }
+  }
+
+  //mx-1 { margin-left: 0.25rem; margin-right: 0.25rem }
+  @each $sizeKey,$size in $spacing-sizes{
+    .#{$typeKey}x-#{$sizeKey}{
+      #{$type}-left : $size * $spacing-base-size;
+      #{$type}-right : $size * $spacing-base-size;
+    }
+    .#{$typeKey}y-#{$sizeKey}{
+      #{$type}-top : $size * $spacing-base-size;
+      #{$type}-bottom : $size * $spacing-base-size;
+    }
+  }
+}
+
+//border
+@each $dir in (top,right,bottom,left) {
+  .border-#{$dir} {
+    border-#{$dir}: 1px solid $border-color;
+  }
+}

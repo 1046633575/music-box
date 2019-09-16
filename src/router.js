@@ -1,25 +1,23 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+import Main from './views/main'
+import Rank from './views/rank'
 
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history', //去除连接后面的 #
   base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
+      component: Main,
+      name: 'main'
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      path: '/rank',
+      component: Rank,
+      name: 'rank'
     }
   ]
 })
