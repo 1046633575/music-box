@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Main from './views/main'
 import Rank from './views/rank'
+import Nav from './components/Nav'
 
 Vue.use(Router)
 
@@ -11,13 +12,17 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: Main,
-      name: 'main'
+      components: {
+        default: Nav,
+        'link': Main
+      }
     },
     {
       path: '/rank',
-      component: Rank,
-      name: 'rank'
+      components: {
+        default: Nav,
+        'link': Rank
+      }
     }
   ]
 })
