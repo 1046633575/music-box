@@ -26,9 +26,9 @@ export default {
     width: 100%;
     min-width: 320px;
     max-width: 640px;
-    height: 100%;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0,0,0,.3);
     position: relative;
+    margin: 0 auto;
   }
 </style>

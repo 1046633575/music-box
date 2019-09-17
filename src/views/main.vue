@@ -1,10 +1,13 @@
 <template>
-  <div class="main-container">
+  <div class="main-container" id="main">
     <swiper :options="swiperOption" ref="mySwiper" @someSwiperEvent="swiperChange">
       <swiper-slide>
-        <mt-swipe class="b-radius-6" :auto="5000" style="height: 140px;">
+        <!--轮播图-->
+        <mt-swipe class="mtSwiper b-radius-6" ref="mtSwiper" :auto="5000">
           <mt-swipe-item v-for="item in bannerList" :key="item.bannerId"><img class="w-100 h-100" :src="item.pic" alt=""></mt-swipe-item>
         </mt-swipe>
+        <!--推荐歌单-->
+        <Song-Sheet></Song-Sheet>
       </swiper-slide>
       <swiper-slide>
         242
@@ -16,6 +19,7 @@
 
 <script>
 import { Toast } from 'mint-ui'
+import SongSheet from '../components/SongSheet'
 export default {
   data () {
     return {
@@ -24,6 +28,12 @@ export default {
   },
   created () {
     this.getBanner()
+  },
+  mounted () {
+    this.changeBannerHeight()
+  },
+  components: {
+    SongSheet
   },
   methods: {
     // 获取轮播图数据
@@ -36,12 +46,26 @@ export default {
         Toast({
           message: '轮播图获取失败',
           position: 'bottom',
-          duration: 3000
+          duration: 5000
         })
       })
     },
-    swiperChange () {
-      console.log('ss')
+    // 根据设备宽度设置轮播图高度
+    changeBannerHeight () {
+      let width = document.documentElement.clientWidth
+      if (width >= 640) {
+        document.querySelector('.mtSwiper').classList.add('newMtSwiper')
+      } else {
+        document.querySelector('.mtSwiper').classList.remove('newMtSwiper')
+      }
+      window.onresize = () => {
+        width = document.documentElement.clientWidth
+        if (width >= 640) {
+          document.querySelector('.mtSwiper').classList.add('newMtSwiper')
+        } else {
+          document.querySelector('.mtSwiper').classList.remove('newMtSwiper')
+        }
+      }
     }
   }
 }
@@ -49,6 +73,12 @@ export default {
 
 <style scoped lang="scss" >
   .main-container{
-    padding: 0 5px;
+    padding: 0 5px 50px;
+    .mtSwiper{
+      height: 140px;
+    }
+    .newMtSwiper{
+      height: 280px;
+    }
   }
 </style>

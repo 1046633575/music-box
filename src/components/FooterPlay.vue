@@ -47,8 +47,10 @@ export default {
   footer{
     width: 100%;
     height: 50px;
-    position: absolute;
+    position: fixed;
     bottom: 0;
+    z-index: 999;
+    background-color: #fff;
     border-top: 1px solid #ccc;
     .footer-left{
       width: 50px;

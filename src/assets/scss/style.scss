@@ -16,6 +16,13 @@ input{
   border: none;
 }
 
+image[lazy=loading] {
+  width: 40px;
+  height: 300px;
+  background-color: pink;
+  margin: auto;
+}
+
 //colors
 @each $colorKey,$color in $colors{
   .text-#{$colorKey}{
@@ -42,6 +49,9 @@ input{
 }
 
 //border-radius
+.b-radius-3{
+  border-radius: 3px;
+}
 .b-radius-6{
   border-radius: 6px;
 }
@@ -63,6 +73,11 @@ input{
   }
 }
 
+//overflow: hidden
+.over-hidden{
+  overflow: hidden;
+}
+
 //text overflow
 .text-ellipsis-1 {
   display: inline-block;
@@ -71,9 +86,9 @@ input{
   white-space: nowrap;
 }
 .text-ellipsis-2 {
-  display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }

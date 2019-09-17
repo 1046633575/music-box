@@ -2,8 +2,8 @@
   <div class="nav-container">
     <Search-Bar></Search-Bar>
     <div class="link w-100 d-flex jc-between ai-center">
-      <router-link to="/main" tag="div" class="text-grey-3 d-flex jc-center ai-center link-item recommend">推荐</router-link>
-      <router-link to="/rank" tag="div" class="text-grey-3 d-flex jc-center ai-center link-item rank">排行榜</router-link>
+      <div class="text-grey-3 d-flex jc-center ai-center link-item recommend">推荐</div>
+      <div class="text-grey-3 d-flex jc-center ai-center link-item recommend">排行榜</div>
     </div>
   </div>
 </template>
