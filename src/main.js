@@ -6,7 +6,7 @@ import './assets/scss/style.scss'
 import './assets/iconfont/iconfont.css'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
-import { Swipe, SwipeItem, InfiniteScroll, Lazyload, Actionsheet } from 'mint-ui'
+import { Swipe, SwipeItem, InfiniteScroll, Lazyload } from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import Axios from 'axios'
 
@@ -14,7 +14,6 @@ Vue.prototype.$http = Axios
 Axios.defaults.baseURL = 'http://47.95.5.96:3000'
 Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
-Vue.component(Actionsheet.name, Actionsheet)
 Vue.use(VueAwesomeSwiper)
 Vue.use(InfiniteScroll)
 Vue.use(Lazyload, {

@@ -1,18 +1,11 @@
 <template>
   <div class="main-container" id="main">
-    <swiper :options="swiperOption" ref="mySwiper" @someSwiperEvent="swiperChange">
-      <swiper-slide>
-        <!--轮播图-->
-        <mt-swipe class="mtSwiper b-radius-6" ref="mtSwiper" :auto="5000">
-          <mt-swipe-item v-for="item in bannerList" :key="item.bannerId"><img class="w-100 h-100" :src="item.pic" alt=""></mt-swipe-item>
-        </mt-swipe>
-        <!--推荐歌单-->
-        <Song-Sheet></Song-Sheet>
-      </swiper-slide>
-      <swiper-slide>
-        242
-      </swiper-slide>
-    </swiper>
+     <!--轮播图-->
+     <mt-swipe class="mtSwiper b-radius-6" ref="mtSwiper" :auto="5000">
+       <mt-swipe-item v-for="item in bannerList" :key="item.bannerId"><img class="w-100 h-100" :src="item.pic" alt=""></mt-swipe-item>
+     </mt-swipe>
+     <!--推荐歌单-->
+     <Song-Sheet></Song-Sheet>
 
   </div>
 </template>

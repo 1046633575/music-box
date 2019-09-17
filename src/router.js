@@ -12,10 +12,11 @@ export default new Router({
   routes: [
     {
       path: '/',
-      components: {
-        default: Nav,
-        'link': Main
-      }
+      redirect: '/main'
+      // components: {
+      //   default: Nav,
+      //   'link': Main
+      // }
     },
     {
       path: '/main',
@@ -28,7 +29,7 @@ export default new Router({
       path: '/rank',
       components: {
         default: Nav,
-        'link': Main
+        'link': Rank
       }
     }
   ]

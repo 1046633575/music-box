@@ -1,6 +1,17 @@
 <template>
   <div class="songSheetContainer pt-3" id="song">
-    <h3 class="pb-3 px-2">推荐歌单</h3>
+    <!--顶部文字与选择框-->
+    <div class="d-flex jc-between ai-center pb-3 px-2">
+      <h3 >推荐歌单</h3>
+      <div>
+        <select>
+          <option>全部</option>
+          <option>热门</option>
+          <option>华语</option>
+        </select>
+      </div>
+    </div>
+    <!--歌单列表-->
     <div class="list d-flex flex-wrap jc-between px-2" style="min-height: 1500px;" v-infinite-scroll="loadMore"
          infinite-scroll-disabled="loading"
          infinite-scroll-distance="10">
@@ -67,18 +78,28 @@ export default {
             this.loadingFlag = false
           }, 1500)
         }
+      }).catch(() => {
+        Toast({
+          message: '加载更多失败',
+          position: 'bottom',
+          duration: 5000
+        })
       })
+    },
+    // 选择歌单分类
+    checkSongSheet () {
+      this.sheetVisible = true
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  image[lazy=loading] {
-    width: 40px;
-    height: 300px;
-    margin: auto;
-  }
+.moreSheet{
+  width: 80px;
+  height: 26px;
+  border: 1px solid #ccc;
+}
 .list-item{
   width: 30%;
 }
