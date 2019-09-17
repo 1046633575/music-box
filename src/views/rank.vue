@@ -1,5 +1,5 @@
 <template>
-  <div class="rank-container px-3">
+  <div class="rank-container px-3 pb-5">
     <!--官方榜-->
     <h3 class="py-3">官方榜</h3>
     <div class="official-list w-100">
@@ -25,6 +25,7 @@
 
 <script>
 import { Toast } from 'mint-ui'
+
 export default {
   data () {
     return {

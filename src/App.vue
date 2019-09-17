@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <router-view name="link"></router-view>
+    <router-view name="link" id="link"></router-view>
     <!--底部播放栏-->
     <Footer></Footer>
   </div>
