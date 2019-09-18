@@ -15,7 +15,7 @@
     <div class="list d-flex flex-wrap jc-between px-2" style="min-height: 1500px;" v-infinite-scroll="loadMore"
          infinite-scroll-disabled="loading"
          infinite-scroll-distance="10">
-      <div class="list-item pb-3 " v-for="item in songSheetList" :key="item.id">
+      <div @click="goToSongList(item.id)" class="list-item pb-3 " v-for="item in songSheetList" :key="item.id">
         <div class="img w-100">
           <img class="w-100 b-radius-3" v-lazy.song="item.coverImgUrl" alt="">
         </div>
@@ -89,6 +89,11 @@ export default {
     // 选择歌单分类
     checkSongSheet () {
       this.sheetVisible = true
+    },
+    // 跳转到歌曲列表页
+    goToSongList (id) {
+      console.log(id)
+      this.$router.push({ path: '/songList', query: { id: id } })
     }
   }
 }

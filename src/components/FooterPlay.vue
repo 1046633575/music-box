@@ -46,6 +46,7 @@ export default {
 <style scoped lang="scss">
   footer{
     width: 100%;
+    max-width: 640px;
     height: 50px;
     position: fixed;
     bottom: 0;

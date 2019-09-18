@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <router-view name="link" id="link"></router-view>
+    <router-view name="link"></router-view>
     <!--底部播放栏-->
     <Footer></Footer>
   </div>
@@ -24,6 +24,7 @@ export default {
   @import "assets/scss/variables.scss";
   #app{
     width: 100%;
+    height: 100%;
     min-width: 320px;
     max-width: 640px;
     background-color: #fff;

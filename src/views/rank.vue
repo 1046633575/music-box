@@ -3,7 +3,7 @@
     <!--官方榜-->
     <h3 class="py-3">官方榜</h3>
     <div class="official-list w-100">
-      <div class="list-item w-100 d-flex py-2" v-for="item in rankList" :key="item.id">
+      <div @click="goRankList(item.id)" class="list-item w-100 d-flex py-2" v-for="item in rankList" :key="item.id">
         <img class="list-item-img b-radius-6" v-lazy="item.coverImgUrl" alt="">
         <div class="item-right pl-3 py-1 d-flex flex-column jc-between">
           <p class="text-black" v-for="(song,i) in item.tracks" :key="i">{{song.first}} - {{song.second}}</p>
@@ -13,7 +13,7 @@
     <!--推荐榜-->
     <h3 class="py-3">推荐榜</h3>
     <div class="recommend-list d-flex flex-wrap jc-between">
-      <div class="list-item pb-3 " v-for="item in rankList2" :key="item.id">
+      <div @click="goRankList(item.id)" class="list-item pb-3 " v-for="item in rankList2" :key="item.id">
         <div class="img w-100">
           <img class="w-100 b-radius-6" v-lazy.song="item.coverImgUrl" alt="">
         </div>
@@ -53,6 +53,10 @@ export default {
           duration: 5000
         })
       })
+    },
+    // 跳转至榜单列表
+    goRankList (id) {
+      this.$router.push({ path: '/rankList', query: { id: id } })
     }
   }
 }
@@ -61,6 +65,7 @@ export default {
 <style lang="scss" scoped>
   .rank-container{
     min-height: 800px;
+    background-color: #fff;
     .list-item-img{
       width: 100px;
       height: 100px;

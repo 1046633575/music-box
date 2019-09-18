@@ -6,7 +6,6 @@
      </mt-swipe>
      <!--推荐歌单-->
      <Song-Sheet></Song-Sheet>
-
   </div>
 </template>
 
@@ -68,6 +67,7 @@ export default {
 <style scoped lang="scss" >
   .main-container{
     padding: 0 5px 50px;
+    background-color: #fff;
     .mtSwiper{
       height: 140px;
     }

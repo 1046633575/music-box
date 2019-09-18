@@ -34,7 +34,6 @@ window.onload = function () {
       } else {
         if (distanceX > 0) {
           document.querySelector('.rank-container').style = `transform: translateX(0)`
-          
         } else {
           document.querySelector('.main-container').style = `transform: translateX(0)`
         }

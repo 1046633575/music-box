@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Main from './views/main'
 import Rank from './views/rank'
 import Nav from './components/Nav'
+import songList from './views/songList'
 
 Vue.use(Router)
 
@@ -30,6 +31,18 @@ export default new Router({
       components: {
         default: Nav,
         'link': Rank
+      }
+    },
+    {
+      path: '/songList',
+      components: {
+        default: songList
+      }
+    },
+    {
+      path: '/rankList',
+      components: {
+        default: songList
       }
     }
   ]
