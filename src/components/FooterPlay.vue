@@ -1,18 +1,18 @@
 <template>
   <div class="container">
     <footer class="d-flex jc-between ai-center px-1">
-      <audio id="audio" ref="audio" v-show="false" src="http://m10.music.126.net/20190629153145/4e387577cb7d314369becca1e5d94e91/ymusic/b7e8/df03/e357/cfb42de2491eea63cb68331a3c61fe5b.mp3"></audio>
+      <audio id="audio" ref="audio" v-show="false" :src="musicUrl"></audio>
       <div class="footer-left d-flex jc-center ai-center">
-        <img src="../assets/image/music.png" alt="" class="b-radius-50">
+        <img :src="music.al.picUrl" alt="" class="b-radius-50">
       </div>
       <div class="footer-center flex-1">
-        <p class="name fs-lg text-black">旋木</p>
-        <p class="author fs-md text-grey-4">王菲</p>
+        <p class="w-100 name fs-lg text-black text-ellipsis-1">{{music.name}}</p>
+        <p class="w-100 author fs-md text-grey-4 text-ellipsis-1">{{music.ar[0].name}}</p>
       </div>
       <div class="footer-right d-flex jc-around ai-center">
-        <div @click="changePlayState">
-          <i class="iconfont icon-bofang fs-xxl" v-show="flag"></i>
-          <i class="iconfont icon-zanting fs-xxl" v-show="!flag"></i>
+        <div>
+          <i @click="play" class="iconfont icon-bofang fs-xxl" v-show="flag"></i>
+          <i @click="pause" class="iconfont icon-zanting fs-xxl" v-show="!flag"></i>
         </div>
         <div>
           <i class="iconfont icon-caidan fs-xxl"></i>
@@ -23,21 +23,85 @@
 </template>
 
 <script>
+import { Toast } from 'mint-ui'
 export default {
   data () {
     return {
-      flag: true
+      music: {},
+      musicUrl: '',
+      flag: this.$store.state.playFlag,
+      musicId: this.$store.state.musicId,
+      startFlag: false
+    }
+  },
+  created () {
+    this.getMusicDetail(this.$store.state.musicId)
+    this.getMusicUrl(this.$store.state.musicId)
+    this.pause()
+  },
+  // 监听 vuex 的变化
+  computed: {
+    getStoreId () {
+      return this.$store.state.musicId
+    }
+  },
+  watch: {
+    getStoreId (newVal) {
+      this.startFlag = true
+      this.getMusicDetail(newVal)
+      this.getMusicUrl(newVal)
     }
   },
   methods: {
-    // 播放或暂停
-    changePlayState () {
-      if (this.flag) {
-        // 播放
-      } else {
-        // 暂停
+    // 播放歌曲
+    play () {
+      if (this.$store.state.playFlag === false) {
+        this.$store.commit('changePlayFlag', true)
+        this.flag = this.$store.state.playFlag
       }
-      this.flag = !this.flag
+      this.$store.commit('changePlayFlag', false)
+      this.flag = this.$store.state.playFlag
+      this.$refs.audio.play()
+    },
+    pause () {
+      if (this.$store.state.playFlag === false) {
+        this.$store.commit('changePlayFlag', true)
+        this.flag = this.$store.state.playFlag
+        this.$refs.audio.pause()
+      }
+    },
+    // 获取歌曲详情
+    getMusicDetail (id) {
+      this.$http.get('http://47.95.5.96:3000/song/detail?ids=' + id).then(res => {
+        if (res.data.code === 200) {
+          this.music = res.data.songs[0]
+        }
+      }).catch(() => {
+        Toast({
+          message: '数据获取失败',
+          position: 'bottom',
+          duration: 5000
+        })
+      })
+    },
+    // 获取歌曲 url
+    getMusicUrl (id) {
+      this.$http.get('http://47.95.5.96:3000/song/url?id=' + id).then(res => {
+        if (res.data.code === 200) {
+          this.musicUrl = res.data.data[0].url
+        }
+        if (this.startFlag) {
+          setTimeout(() => {
+            this.play()
+          }, 100)
+        }
+      }).catch(() => {
+        Toast({
+          message: 'url获取失败',
+          position: 'bottom',
+          duration: 5000
+        })
+      })
     }
   }
 }
@@ -60,6 +124,9 @@ export default {
         width: 35px;
         height: 35px;
       }
+    }
+    .footer-center{
+      width: 60%;
     }
     .footer-right{
       width: 90px;

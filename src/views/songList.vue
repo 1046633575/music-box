@@ -5,7 +5,7 @@
     <div class="content text-black d-flex flex-column">
       <div class="fixed">
         <!--背景-->
-        <img class="bg" :src="playList.coverImgUrl" alt="" >
+        <img class="bg" :src="playList.coverImgUrl" alt="">
         <div class="top d-flex jc-between fs-xl">
           <div class="img">
             <img class="w-100 h-100 b-radius-3" :src="playList.coverImgUrl" alt="">
@@ -23,7 +23,7 @@
           <div class="list">
             <div class="list-item d-flex ai-center text-black mb-3" v-for="(item, i) in playList.tracks" :key="item.id">
               <div class="left">{{i+1}}</div>
-              <div class="center h-100 d-flex ai-center jc-between">
+              <div @click="changeVuex(item.id,i)" class="center h-100 d-flex ai-center jc-between">
                 <div class="first w-100 h-100 d-flex flex-column jc-around ">
                   <div class="name w-100 text-ellipsis-1">{{item.name}}</div>
                   <div class="author w-100 fs-xs text-grey-3 text-ellipsis-1">{{item.ar[0].name}}</div>
@@ -60,7 +60,6 @@ export default {
         if (res.data.code === 200) {
           this.playList = res.data.playlist
         }
-        console.log(this.playList)
       }).catch(() => {
         Toast({
           message: '数据获取失败',
@@ -68,6 +67,12 @@ export default {
           duration: 5000
         })
       })
+    },
+    // 用户点击了列表中的歌曲，在 vuex 中改变 播放歌曲列表及索引,id
+    changeVuex (id, i) {
+      this.$store.commit('changeMusicId', id)
+      this.$store.commit('changeIndex', i)
+      this.$store.commit('changeMusicList', this.playList)
     }
   }
 }

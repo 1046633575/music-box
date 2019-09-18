@@ -3,7 +3,7 @@
     <router-view></router-view>
     <router-view name="link"></router-view>
     <!--底部播放栏-->
-    <Footer></Footer>
+    <Footer ref="footer"></Footer>
   </div>
 </template>
 
@@ -12,10 +12,14 @@ import Footer from './components/FooterPlay'
 export default {
   data () {
     return {
+      music: {},
+      musicUrl: ''
     }
   },
   components: {
     Footer: Footer
+  },
+  methods: {
   }
 }
 </script>
