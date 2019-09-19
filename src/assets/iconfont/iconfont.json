@@ -90,6 +90,13 @@
       "unicode_decimal": 58985
     },
     {
+      "icon_id": "8817399",
+      "name": "关  闭",
+      "font_class": "guanbi",
+      "unicode": "e507",
+      "unicode_decimal": 58631
+    },
+    {
       "icon_id": "8832305",
       "name": "播放 - 网易icon",
       "font_class": "bofang-wangyiicon",
