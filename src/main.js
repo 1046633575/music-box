@@ -9,7 +9,7 @@ import 'swiper/dist/css/swiper.css'
 import { Swipe, SwipeItem, InfiniteScroll, Lazyload } from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import Axios from 'axios'
-import './assets/touch/touch'
+// import './assets/touch/touch'
 
 Vue.prototype.$http = Axios
 Axios.defaults.baseURL = 'http://47.95.5.96:3000'

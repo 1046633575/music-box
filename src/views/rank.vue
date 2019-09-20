@@ -56,7 +56,7 @@ export default {
     },
     // 跳转至榜单列表
     goRankList (id) {
-      this.$router.push({ path: '/rankList', query: { id: id } })
+      this.$router.push({ path: '/songList', query: { id: id } })
     }
   }
 }

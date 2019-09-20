@@ -4,6 +4,8 @@ import Main from './views/main'
 import Rank from './views/rank'
 import Nav from './components/Nav'
 import songList from './views/songList'
+import play from './views/play'
+import search from './views/search'
 
 Vue.use(Router)
 
@@ -35,15 +37,18 @@ export default new Router({
     },
     {
       path: '/songList',
-      components: {
-        default: songList
-      }
+      component: songList,
+      name: songList
     },
     {
-      path: '/rankList',
-      components: {
-        default: songList
-      }
+      path: '/play',
+      component: play,
+      name: play
+    },
+    {
+      path: '/search',
+      component: search,
+      name: search
     }
   ]
 })

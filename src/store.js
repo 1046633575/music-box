@@ -12,7 +12,9 @@ export default new Vuex.Store({
     // 歌曲列表
     musicList: [],
     // 歌曲播放状态
-    playFlag: true
+    playFlag: true,
+    // 控制底部播放栏的显示
+    footerFlag: true
   },
   mutations: {
     changeMusicId (state, id) {
@@ -26,6 +28,9 @@ export default new Vuex.Store({
     },
     changePlayFlag (state, flag) {
       this.state.playFlag = flag
+    },
+    changeFooterFlag (state, flag) {
+      this.state.footerFlag = flag
     }
   }
 })

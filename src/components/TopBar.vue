@@ -2,13 +2,20 @@
   <div class="topBar-container">
     <div class="topBar d-flex ai-center text-black">
       <div @click="goBack" class="goBack d-flex ai-center jc-center"><i class="iconfont icon-fanhuipt fs-xxl"></i></div>
-      <div class="name fs-xl">歌单</div>
+      <div>
+        <div class="name fs-xl">{{title}}</div>
+        <div class="fs-sm text-grey-3">{{name}}</div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    title: String,
+    name: String
+  },
   data () {
     return {
     }

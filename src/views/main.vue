@@ -68,6 +68,7 @@ export default {
   .main-container{
     padding: 0 5px 50px;
     background-color: #fff;
+    overflow: scroll;
     .mtSwiper{
       height: 140px;
     }

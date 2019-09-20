@@ -1,7 +1,7 @@
 <template>
   <div class="songList-container">
     <!--顶部返回栏-->
-    <top-bar></top-bar>
+    <top-bar :title="title"></top-bar>
     <div class="content text-black d-flex flex-column">
       <div class="fixed">
         <!--背景-->
@@ -12,15 +12,17 @@
           </div>
           <div class="title">{{playList.name}}</div>
         </div>
-        <div class="center d-flex ai-center fs-lg">
-          <i class="iconfont icon-bofang" style="font-size: 24px;"></i>
-          <span class="pl-3">播放全部(共{{playList.tracks.length}}首)</span>
+        <div class="center fs-lg d-flex ai-center">
+          <div @click="changeVuex(playList.tracks[0].id,0)" class="d-flex ai-center">
+            <i class="iconfont icon-bofang" style="font-size: 24px;"></i>
+            <span class="pl-3">播放全部(共{{playList.tracks.length}}首)</span>
+          </div>
         </div>
       </div>
 
       <div class="bottom-fa flex-1">
         <div class="bottom">
-          <div class="list">
+          <div class="list pt-3">
             <div class="list-item d-flex ai-center text-black mb-3" v-for="(item, i) in playList.tracks" :key="item.id">
               <div class="left">{{i+1}}</div>
               <div @click="changeVuex(item.id,i)" class="center h-100 d-flex ai-center jc-between">
@@ -44,7 +46,8 @@ import topBar from '../components/TopBar'
 export default {
   data () {
     return {
-      playList: []
+      playList: [],
+      title: '歌曲列表'
     }
   },
   components: {
@@ -100,7 +103,7 @@ export default {
       position: absolute;
       top: 0;
       left: 0;
-      background:hsla(0,0%,100%,.4) border-box;
+      /*background:hsla(0,0%,100%,.4) border-box;*/
       .fixed{
         position: relative;
         z-index: 9;

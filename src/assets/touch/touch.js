@@ -17,11 +17,11 @@ window.onload = function () {
       isMove = true
       var moveX = e.touches[0].clientX
       distanceX = moveX - startX
-      if (distanceX > 0) {
-        document.querySelector('.rank-container').style = `transform: translateX(${distanceX}px)`
-      } else {
-        document.querySelector('.main-container').style = `transform: translateX(${distanceX}px)`
-      }
+      // if (distanceX > 0) {
+      //   document.querySelector('.rank-container').style = `transform: translateX(${distanceX}px)`
+      // } else {
+      //   document.querySelector('.main-container').style = `transform: translateX(${distanceX}px)`
+      // }
     })
     dom.addEventListener('touchend', function (e) {
       // 滑动结束

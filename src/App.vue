@@ -1,9 +1,11 @@
 <template>
   <div id="app">
-    <router-view></router-view>
-    <router-view name="link"></router-view>
-    <!--底部播放栏-->
-    <Footer ref="footer"></Footer>
+    <div class="main">
+      <router-view></router-view>
+      <router-view name="link"></router-view>
+      <!--底部播放栏-->
+      <Footer ref="footer"></Footer>
+    </div>
   </div>
 </template>
 
@@ -19,7 +21,11 @@ export default {
   components: {
     Footer: Footer
   },
+  created () {
+  },
   methods: {
+  },
+  watch: {
   }
 }
 </script>
@@ -35,5 +41,11 @@ export default {
     box-shadow: 0 0 10px rgba(0,0,0,.3);
     position: relative;
     margin: 0 auto;
+    overflow: hidden;
+    .main{
+      width: 100%;
+      height: 100%;
+      overflow: scroll;
+    }
   }
 </style>
