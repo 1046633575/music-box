@@ -87,6 +87,9 @@ export default {
     },
     getFooterFlag () {
       return this.$store.state.footerFlag
+    },
+    getPlayFlag () {
+      return this.$store.state.playFlag
     }
   },
   watch: {
@@ -98,6 +101,9 @@ export default {
     },
     getFooterFlag (newVal) {
       this.footerFlag = newVal
+    },
+    getPlayFlag (newVal) {
+      this.flag = newVal
     },
     // 判断路由状态，如果到了播放页面，隐藏底部播放栏，如果没到不隐藏
     $route (to, from) {

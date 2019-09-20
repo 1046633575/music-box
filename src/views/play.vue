@@ -1,7 +1,38 @@
 <template>
   <div class="play-container">
-    <top-bar :title="music.name" :name="music.ar[0].name"></top-bar>
+    <top-bar :title="music.name" :name="music.ar[0].name" :flag="true"></top-bar>
     <img class="bg" :src="music.al.picUrl" alt="">
+    <div class="dv"></div>
+    <!--播放cd图片-->
+    <div class="play-top d-flex jc-center ai-center">
+      <div class="box d-flex jc-center ai-center b-radius-50">
+        <div class="box-top"></div>
+        <img class="b-radius-50" :src="music.al.picUrl" alt="">
+      </div>
+    </div>
+    <!--歌词-->
+    <div class="play-center"></div>
+    <!--底部控制栏-->
+    <div class="play-bottom d-flex jc-around ai-center text-white">
+      <div class="state">
+        <i class="iconfont icon-xunhuanbofang"></i>
+        <i class="iconfont icon-danquxunhuan"></i>
+        <i class="iconfont icon-suijibofang"></i>
+      </div>
+      <div class="left">
+        <i class="iconfont icon-shangyiqu"></i>
+      </div>
+      <div class="center">
+        <i @click="play" v-show="flag" class="iconfont icon-zanting1"></i>
+        <i @click="pause" v-show="!flag" class="iconfont icon-bofang-wangyiicon"></i>
+      </div>
+      <div class="right">
+        <i class="iconfont icon-xiayiqu"></i>
+      </div>
+      <div class="menu">
+        <i class="iconfont icon-caidan"></i>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -13,7 +44,9 @@ export default {
     return {
       music: {},
       musicList: [],
-      index: null
+      index: null,
+      // 音乐的播放与暂停
+      flag: this.$store.state.playFlag
     }
   },
   components: {
@@ -45,6 +78,7 @@ export default {
       this.$http.get('http://47.95.5.96:3000/song/detail?ids=' + id).then(res => {
         if (res.data.code === 200) {
           this.music = res.data.songs[0]
+          console.log(this.music)
         }
       }).catch(() => {
         Toast({
@@ -69,6 +103,24 @@ export default {
           console.log(res.data.lrc)
         }
       })
+    },
+    // 播放歌曲
+    play () {
+      if (this.$store.state.playFlag === false) {
+        this.$store.commit('changePlayFlag', true)
+        this.flag = this.$store.state.playFlag
+      }
+      this.$store.commit('changePlayFlag', false)
+      this.flag = this.$store.state.playFlag
+      document.querySelector('#audio').play()
+    },
+    // 暂停歌曲
+    pause () {
+      if (this.$store.state.playFlag === false) {
+        this.$store.commit('changePlayFlag', true)
+        this.flag = this.$store.state.playFlag
+        document.querySelector('#audio').pause()
+      }
     }
   }
 }
@@ -90,6 +142,75 @@ export default {
       -o-filter:blur(150px);
       position: absolute;
       top: 0;
+    }
+    .dv{
+      width: 100%;
+      height: 100%;
+      background:hsla(0,0%,0%,.6) border-box;
+    }
+    .play-top{
+      width: 100%;
+      height: 50%;
+      position: absolute;
+      top: 0;
+      z-index: 9;
+      .box{
+        width: 260px;
+        height: 260px;
+        background: url("../assets/image/disc.png") no-repeat;
+        -webkit-background-size: cover;
+        background-size: cover;
+        img{
+          width: 64%;
+        }
+        .box-top{
+          width: 84px;
+          height: 120px;
+          background: url("../assets/image/needle.png") no-repeat;
+          -webkit-background-size: cover;
+          background-size: cover;
+          position: absolute;
+          top: 0;
+          left: 50%;
+          z-index: 9;
+        }
+      }
+    }
+    .play-center{
+      width: 100%;
+      height: 40%;
+      background-color: pink;
+      position: absolute;
+      top: 50%;
+      z-index: 9;
+    }
+    .play-bottom{
+      width: 100%;
+      height: 10%;
+      position: absolute;
+      top: 90%;
+      z-index: 9;
+      .state,
+      .left,
+      .center,
+      .right,
+      .menu{
+        width: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+      .iconfont{
+        font-size: 24px;
+        position: absolute;
+      }
+      .center{
+        .iconfont{
+          font-size: 44px;
+        }
+      }
     }
   }
 </style>

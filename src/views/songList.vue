@@ -1,11 +1,12 @@
 <template>
   <div class="songList-container">
     <!--顶部返回栏-->
-    <top-bar :title="title"></top-bar>
+    <top-bar :title="title" :flag="false"></top-bar>
     <div class="content text-black d-flex flex-column">
       <div class="fixed">
         <!--背景-->
         <img class="bg" :src="playList.coverImgUrl" alt="">
+        <div class="dv"></div>
         <div class="top d-flex jc-between fs-xl">
           <div class="img">
             <img class="w-100 h-100 b-radius-3" :src="playList.coverImgUrl" alt="">
