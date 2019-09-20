@@ -11,7 +11,13 @@
       </div>
     </div>
     <!--歌词-->
-    <div class="play-center"></div>
+    <div class="play-center ">
+      <div class="d-flex flex-column jc-center">
+        <div class="first text-center text-black">我忘了只能原地奔跑的那忧伤</div>
+        <div class="second text-center my-5 text-white fs-lg">也忘了自己是永远被锁上</div>
+        <div class="last text-center text-black">只为了满足孩子的愿望</div>
+      </div>
+    </div>
     <!--底部控制栏-->
     <div class="play-bottom d-flex jc-around ai-center text-white">
       <div class="state">
@@ -31,6 +37,14 @@
       </div>
       <div class="menu">
         <i class="iconfont icon-caidan"></i>
+      </div>
+      <div class="progresBar d-flex jc-between ai-center text-grey-1 fs-sm">
+        <div class="left">01:23</div>
+        <div class="center">
+          <div class="bar"></div>
+          <div class="round"></div>
+        </div>
+        <div class="right">03:39</div>
       </div>
     </div>
   </div>
@@ -179,7 +193,6 @@ export default {
     .play-center{
       width: 100%;
       height: 40%;
-      background-color: pink;
       position: absolute;
       top: 50%;
       z-index: 9;
@@ -209,6 +222,33 @@ export default {
       .center{
         .iconfont{
           font-size: 44px;
+        }
+      }
+      .progresBar{
+        width: 100%;
+        height: 20px;
+        position: absolute;
+        top: -30px;
+        .center{
+          width: 80%;
+          height: 1px;
+          background-color: #d2d2d2;
+          display: flex;
+          align-items: center;
+          justify-content: start;
+          .bar{
+            width: 20%;
+            height: 2px;
+            background-color: #d2d2d2;
+          }
+          .round{
+            width: 8px;
+            height: 8px;
+            background-color: #fff;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+          }
         }
       }
     }
