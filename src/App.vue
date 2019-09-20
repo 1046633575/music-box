@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <div class="main">
-      <router-view></router-view>
+      <keep-alive include="play">
+        <router-view></router-view>
+      </keep-alive>
       <router-view name="link"></router-view>
       <!--底部播放栏-->
       <Footer ref="footer"></Footer>

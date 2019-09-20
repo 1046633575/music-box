@@ -13,9 +13,9 @@
     <!--歌词-->
     <div class="play-center ">
       <div class="d-flex flex-column jc-center">
-        <div class="first text-center text-black">我忘了只能原地奔跑的那忧伤</div>
-        <div class="second text-center my-5 text-white fs-lg">也忘了自己是永远被锁上</div>
-        <div class="last text-center text-black">只为了满足孩子的愿望</div>
+        <div class="first text-center text-grey-1">{{firstLrc}}</div>
+        <div class="second text-center my-5 text-white fs-lg">{{secondLrc}}</div>
+        <div class="last text-center text-grey-1">{{lastLrc}}</div>
       </div>
     </div>
     <!--底部控制栏-->
@@ -41,7 +41,7 @@
       <div class="progresBar d-flex jc-between ai-center text-grey-1 fs-sm">
         <div class="left">01:23</div>
         <div class="center">
-          <div class="bar"></div>
+          <div class="bar" :style="myProgress"></div>
           <div class="round"></div>
         </div>
         <div class="right">03:39</div>
@@ -54,13 +54,24 @@
 import topBar from '../components/TopBar'
 import { Toast } from 'mint-ui'
 export default {
+  name: 'play',
   data () {
     return {
       music: {},
       musicList: [],
       index: null,
       // 音乐的播放与暂停
-      flag: this.$store.state.playFlag
+      flag: this.$store.state.playFlag,
+      // 歌词
+      lrc: null,
+      // 歌曲进度
+      myProgress: null,
+      // 第一行歌词
+      firstLrc: '',
+      // 第二行歌词
+      secondLrc: '',
+      // 第三行歌词
+      lastLrc: ''
     }
   },
   components: {
@@ -76,6 +87,9 @@ export default {
   computed: {
     getStoreId () {
       return this.$store.state.musicId
+    },
+    getMusicPlayTime () {
+      return this.$store.state.musicTime
     }
   },
   watch: {
@@ -83,7 +97,37 @@ export default {
       this.getMusicDetail(newVal)
       this.getMusicList()
       this.getMusicIndex()
-      this.getMusicLyric()
+      this.getMusicLyric(newVal)
+    },
+    getMusicPlayTime (time) {
+      console.log(time)
+      const longTime = this.music.dt / 1000
+      const percentage = parseInt(time / longTime * 100)
+      this.myProgress = { width: percentage + '%' }
+      // var num = 0
+      // 歌词
+      // 监听到时间变化后 获取时间对应的歌词
+      if (this.lrc[parseInt(time)] !== undefined && this.lrc[parseInt(time)] !== '') {
+        // 第一行歌词
+        var oldTime = parseInt(time) - 1
+        for (let i = 0; i < 30; i++) {
+          if (this.lrc[oldTime - i] !== undefined && this.lrc[oldTime - i] !== '') {
+            this.firstLrc = this.lrc[oldTime - i]
+            break
+          }
+        }
+        // 第二行歌词
+        this.secondLrc = this.lrc[parseInt(time)]
+        console.log(this.lrc[parseInt(time)])
+        // 第三行歌词
+        const newTime = parseInt(time) + 1
+        for (let i = 0; i < 30; i++) {
+          if (this.lrc[newTime + i] !== undefined && this.lrc[newTime + i] !== '') {
+            this.lastLrc = this.lrc[newTime + i]
+            break
+          }
+        }
+      }
     }
   },
   methods: {
@@ -114,9 +158,34 @@ export default {
     getMusicLyric (id) {
       this.$http.get('http://47.95.5.96:3000/lyric?id=' + id).then(res => {
         if (res.data.code === 200) {
-          console.log(res.data.lrc)
+          const oldLrc = res.data.lrc.lyric
+          this.lrc = this.parseLyric(oldLrc)
+          console.log(this.lrc)
         }
       })
+    },
+    // 正则表达式处理歌词
+    parseLyric (lrc) {
+      var lyrics = lrc.split('\n')
+      var lrcObj = {}
+      for (var i = 0; i < lyrics.length; i++) {
+        var lyric = decodeURIComponent(lyrics[i])
+        var timeReg = /\[\d*:\d*((\.|\:)\d*)*\]/g
+        var timeRegExpArr = lyric.match(timeReg)
+        if (!timeRegExpArr) continue
+        var clause = lyric.replace(timeReg, '')
+        for (var k = 0, h = timeRegExpArr.length; k < h; k++) {
+          var t = timeRegExpArr[k]
+          var min = Number(String(t.match(/\[\d*/i)).slice(1))
+          var sec = Number(String(t.match(/:\d*/i)).slice(1))
+          var time = min * 60 + sec
+          if (clause === '') {
+            break
+          }
+          lrcObj[time] = clause
+        }
+      }
+      return lrcObj
     },
     // 播放歌曲
     play () {
@@ -237,7 +306,7 @@ export default {
           align-items: center;
           justify-content: start;
           .bar{
-            width: 20%;
+            width: 0%;
             height: 2px;
             background-color: #d2d2d2;
           }

@@ -1,16 +1,14 @@
 <template>
   <div class="container">
-    <footer v-show="footerFlag"  class="d-flex jc-between ai-center px-1">
+    <footer v-show="footerFlag"  class="d-flex w-100 jc-between ai-center px-1">
       <audio id="audio" ref="audio" v-show="false" :src="musicUrl"></audio>
-      <div @click="goToPlay" class="d-flex jc-between ai-center px-1 flex-1">
-        <div class="footer-left d-flex jc-center ai-center">
-          <img :src="music.al.picUrl" alt="" class="b-radius-50">
-        </div>
-        <div class="footer-center flex-1 d-flex flex-column jc-center">
+      <div @click="goToPlay" class="footer-left d-flex jc-center ai-center">
+        <img :src="music.al.picUrl" alt="" class="b-radius-50">
+      </div>
+      <div @click="goToPlay" class="footer-center flex-1 d-flex flex-column jc-center">
           <div class="w-100 name fs-lg text-black text-ellipsis-1">{{music.name}}</div>
           <div class="w-100 author fs-md text-grey-4 text-ellipsis-1">{{music.ar[0].name}}</div>
         </div>
-      </div>
       <div class="footer-right d-flex jc-around ai-center">
         <div>
           <i @click="play" class="iconfont icon-bofang fs-xxl" v-show="flag"></i>
@@ -79,6 +77,7 @@ export default {
     this.getMusicUrl(this.$store.state.musicId)
     this.pause()
     this.getRoutePath()
+    this.getMusicPlayTime()
   },
   // 监听 vuex 的变化
   computed: {
@@ -98,6 +97,7 @@ export default {
       this.getMusicDetail(newVal)
       this.getMusicUrl(newVal)
       this.getMusicList()
+      // this.getMusicPlayTime()
     },
     getFooterFlag (newVal) {
       this.footerFlag = newVal
@@ -194,6 +194,13 @@ export default {
         this.$store.commit('changeFooterFlag', true)
         console.log(this.$store.state.footerFlag)
       }
+    },
+    // 在vuex 中存入歌曲数据
+    // 获取播放时间
+    getMusicPlayTime () {
+      setInterval(() => {
+        this.$store.commit('changeMusicTime', document.querySelector('#audio').currentTime)
+      }, 1000)
     }
   }
 }

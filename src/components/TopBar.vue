@@ -2,9 +2,9 @@
   <div class="topBar-container">
     <div class="topBar d-flex ai-center" :class="flag ? 'text-white' : 'text-black'">
       <div @click="goBack" class="goBack d-flex ai-center jc-center"><i class="iconfont icon-fanhuipt fs-xxl"></i></div>
-      <div>
-        <div class="name fs-lg">{{title}}</div>
-        <div class="fs-sm text-grey-1">{{name}}</div>
+      <div class="title d-flex ai-center flex-column">
+        <div class="name fs-lg w-100 text-ellipsis-1">{{title}}</div>
+        <div class="fs-sm text-grey-1 w-100 text-ellipsis-1">{{name}}</div>
       </div>
     </div>
   </div>
@@ -44,6 +44,11 @@ export default {
       .icon-fanhuipt{
         font-size: 26px;
       }
+    }
+    .title{
+      width: 85%;
+      position: relative;
+      z-index: 999;
     }
   }
 </style>
