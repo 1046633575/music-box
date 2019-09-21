@@ -27,7 +27,19 @@ export default {
   },
   methods: {
   },
+  computed: {
+    getListFlag () {
+      return this.$store.state.listFlag
+    }
+  },
   watch: {
+    // 监听到 flag ，发生变化后通过 refs 打开列表
+    getListFlag (newVal) {
+      if (newVal) {
+        this.$store.commit('changeListFlag', false)
+        this.$refs.footer.openList()
+      }
+    }
   }
 }
 </script>

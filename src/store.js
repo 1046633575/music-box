@@ -18,7 +18,11 @@ export default new Vuex.Store({
     // 歌曲当前播放时长
     musicTime: 0,
     // 控制底部列表显示歌手名称
-    authorFlag: true
+    authorFlag: true,
+    // 列表的显示与隐藏
+    listFlag: false,
+    // 列表播放状态，1：列表顺序 2：单曲循环 3：随机播放
+    listState: 1
   },
   mutations: {
     changeMusicId (state, id) {
@@ -41,6 +45,12 @@ export default new Vuex.Store({
     },
     changeAuthorFlag (state, flag) {
       this.state.authorFlag = flag
+    },
+    changeListFlag (state, flag) {
+      this.state.listFlag = flag
+    },
+    changeListState (state, num) {
+      this.state.listState = num
     }
   }
 })

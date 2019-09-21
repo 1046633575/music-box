@@ -52,7 +52,6 @@ export default {
         this.$http.get('/search?keywords=%20' + key).then(res => {
           if (res.data.code === 200) {
             this.songList = res.data.result.songs
-            console.log(this.songList)
           }
         })
       }, 500)

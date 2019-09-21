@@ -20,22 +20,22 @@
     </div>
     <!--底部控制栏-->
     <div class="play-bottom d-flex jc-around ai-center text-white">
-      <div class="state">
-        <i class="iconfont icon-xunhuanbofang"></i>
-        <i class="iconfont icon-danquxunhuan"></i>
-        <i class="iconfont icon-suijibofang"></i>
+      <div @click="changeListState" class="state">
+        <i v-show="listState === 1 ? true : false" class="iconfont icon-xunhuanbofang"></i>
+        <i v-show="listState === 2 ? true : false" class="iconfont icon-danquxunhuan"></i>
+        <i v-show="listState === 3 ? true : false" class="iconfont icon-suijibofang"></i>
       </div>
-      <div class="left">
+      <div @click="prevMusic" class="left">
         <i class="iconfont icon-shangyiqu"></i>
       </div>
       <div class="center">
         <i @click="play" v-show="flag" class="iconfont icon-zanting1"></i>
         <i @click="pause" v-show="!flag" class="iconfont icon-bofang-wangyiicon"></i>
       </div>
-      <div class="right">
+      <div @click="nextMusic" class="right">
         <i class="iconfont icon-xiayiqu"></i>
       </div>
-      <div class="menu">
+      <div @click="openList" class="menu">
         <i class="iconfont icon-caidan"></i>
       </div>
       <div class="progresBar d-flex jc-between ai-center text-grey-1 fs-sm">
@@ -71,7 +71,9 @@ export default {
       // 第二行歌词
       secondLrc: '',
       // 第三行歌词
-      lastLrc: ''
+      lastLrc: '',
+      // 列表状态 1：顺序  2：单曲  3：随机
+      listState: this.$store.state.listState
     }
   },
   components: {
@@ -94,15 +96,21 @@ export default {
   },
   // 监听 vuex 的变化
   computed: {
+    // 监听歌曲 id
     getStoreId () {
       return this.$store.state.musicId
     },
+    // 监听歌曲已播放时间
     getMusicPlayTime () {
       return this.$store.state.musicTime
     },
     // 监听播放状态
-    listenPlayFlag () {
+    getPlayFlag () {
       return this.$store.state.playFlag
+    },
+    // 监听列表状态
+    getListState () {
+      return this.$store.state.listState
     }
   },
   watch: {
@@ -140,7 +148,7 @@ export default {
         }
       }
     },
-    listenPlayFlag (flag) {
+    getPlayFlag (flag) {
       this.flag = this.$store.state.playFlag
       // 调用cd旋转方法
       this.rotateImg(flag)
@@ -153,6 +161,9 @@ export default {
           this.rotateImg(this.$store.state.playFlag)
         }, 100)
       }
+    },
+    getListState (newVal) {
+      this.listState = newVal
     }
   },
   methods: {
@@ -244,6 +255,96 @@ export default {
         const rotateImg = document.querySelector('#img')
         rotateImg.style.animationPlayState = "running"
       }
+    },
+    // 打开列表
+    openList () {
+      this.$store.commit('changeListFlag', true)
+    },
+    // 上一曲
+    prevMusic () {
+      // 当处在随机播放状态时，上下曲都变成随机上下曲
+      if (this.listState === 3) {
+        // 获取歌曲列表总长度
+        const length = this.musicList.length
+        // 得到一个随机数
+        const random = Math.floor(Math.random() * length)
+        // 根据随机数取到新 id
+        const newId = this.musicList[random].id
+        this.$store.commit('changeMusicId', newId)
+        this.$store.commit('changeIndex', random)
+      } else {
+        // 根据当前索引查找列表找出上一曲
+        if (this.index <= 0) {
+          Toast({
+            message: '已经到头了',
+            position: 'bottom',
+            duration: 2000
+          })
+        } else {
+          // 新的索引
+          const newIndex = (this.index - 1)
+          // 歌曲 id
+          const newId = this.musicList[newIndex].id
+          this.$store.commit('changeMusicId', newId)
+          this.$store.commit('changeIndex', newIndex)
+        }
+      }
+    },
+    // 下一曲
+    nextMusic () {
+      // 当处在随机播放状态时，上下曲都变成随机上下曲
+      if (this.listState === 3) {
+        // 获取歌曲列表总长度
+        const length = this.musicList.length
+        // 得到一个随机数
+        const random = Math.floor(Math.random() * length)
+        // 根据随机数取到新 id
+        const newId = this.musicList[random].id
+        this.$store.commit('changeMusicId', newId)
+        this.$store.commit('changeIndex', random)
+      } else {
+        // 根据当前索引查找列表找出下一曲
+        if (this.index > this.musicList.length) {
+          Toast({
+            message: '已经到底了',
+            position: 'bottom',
+            duration: 2000
+          })
+        } else {
+          // 新的索引
+          const newIndex = (this.index + 1)
+          // 歌曲 id
+          const newId = this.musicList[newIndex].id
+          this.$store.commit('changeMusicId', newId)
+          this.$store.commit('changeIndex', newIndex)
+        }
+      }
+    },
+    changeListState () {
+      // 列表播放状态
+      let listState = this.$store.state.listState
+      if (listState === 1) {
+        Toast({
+          message: '单曲循环',
+          position: 'bottom',
+          duration: 1500
+        })
+        this.$store.commit('changeListState', listState + 1)
+      } else if (listState === 2) {
+        Toast({
+          message: '随机播放',
+          position: 'bottom',
+          duration: 1500
+        })
+        this.$store.commit('changeListState', listState + 1)
+      } else {
+        Toast({
+          message: '列表循环',
+          position: 'bottom',
+          duration: 1500
+        })
+        this.$store.commit('changeListState', 1)
+      }
     }
   },
   filters: {
@@ -282,7 +383,7 @@ export default {
     .dv{
       width: 100%;
       height: 100%;
-      background:hsla(0,0%,0%,.6) border-box;
+      background:hsla(0,0%,0%,.8) border-box;
     }
     .play-top{
       width: 100%;

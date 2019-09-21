@@ -24,22 +24,22 @@
       <div class="list-content">
         <div class="box"></div>
         <div class="box2 flex-1">
-          <div class="top d-flex ai-center jc-between fs-lg mb-3">
+          <div class="top d-flex ai-center jc-between fs-md mb-3">
             <div class="left d-flex ai-center">
               <div class="d-flex ai-center">
-                <i class="iconfont icon-xunhuanbofang" style="font-size: 24px;"></i>列表循环
+                <i class="iconfont icon-xunhuanbofang" style="font-size: 16px;"></i>&nbsp;列表循环
               </div>
             </div>
             <div @click="closeList" class="right d-flex ai-center jc-center">
-              <i class="iconfont icon-guanbi" style="font-size: 24px;"></i>关闭
+              <i class="iconfont icon-guanbi" style="font-size: 16px;"></i>&nbsp;关闭
             </div>
           </div>
           <div class="bottom">
             <div class="bottom-list">
-              <div class="list-item d-flex ai-center text-black mb-3" v-for="(item, i) in musicList" :key="item.id">
+              <div class="list-item d-flex ai-center text-black mb-3" :class="$store.state.index === i ? 'active' : ''" v-for="(item, i) in musicList" :key="item.id">
                 <div class="left">{{i+1}}</div>
                 <div class="center h-100 d-flex ai-center jc-between pr-4">
-                  <div class="first w-100 h-100 d-flex flex-column jc-around ">
+                  <div @click="changeVuex(item.id,i)" class="first w-100 h-100 d-flex flex-column jc-around ">
                     <div class="name w-100 text-ellipsis-1">{{item.name}}</div>
                     <div class="author w-100 fs-xs text-grey-3 text-ellipsis-1">{{authorFlag ? item.ar[0].name : item.artists[0].name}}</div>
                   </div>
@@ -62,6 +62,7 @@ export default {
       music: {},
       musicUrl: '',
       flag: this.$store.state.playFlag,
+      index: this.$store.state.index,
       musicId: this.$store.state.musicId,
       // 播放按钮的切换
       startFlag: false,
@@ -71,7 +72,9 @@ export default {
       // 控制底部播放栏的显示与隐藏
       footerFlag: true,
       // 控制底部列表显示歌手名称
-      authorFlag: this.$store.state.authorFlag
+      authorFlag: this.$store.state.authorFlag,
+      // 歌曲是否播放完
+      onEnd: false
     }
   },
   created () {
@@ -80,6 +83,9 @@ export default {
     this.pause()
     this.getRoutePath()
     this.getMusicPlayTime()
+  },
+  mounted () {
+    this.listenerMusicState()
   },
   // 监听 vuex 的变化
   computed: {
@@ -102,7 +108,7 @@ export default {
       this.getMusicDetail(newVal)
       this.getMusicUrl(newVal)
       this.getMusicList()
-      // this.getMusicPlayTime()
+      this.getMusicIndex()
     },
     getFooterFlag (newVal) {
       this.footerFlag = newVal
@@ -187,6 +193,9 @@ export default {
     getMusicList () {
       this.musicList = this.$store.state.musicList
     },
+    getMusicIndex () {
+      this.index = this.$store.state.index
+    },
     // 跳转至音乐播放页
     goToPlay () {
       this.$router.push({ path: 'play' })
@@ -200,12 +209,43 @@ export default {
         this.$store.commit('changeFooterFlag', true)
       }
     },
-    // 在vuex 中存入歌曲数据
+    // 用户点击了列表中的歌曲，在 vuex 中改变 播放歌曲列表及索引,id
+    changeVuex (id, i) {
+      this.$store.commit('changeMusicId', id)
+      this.$store.commit('changeIndex', i)
+      // this.$store.commit('changeMusicList', this.musicList)
+    },
     // 获取播放时间
     getMusicPlayTime () {
       setInterval(() => {
         this.$store.commit('changeMusicTime', document.querySelector('#audio').currentTime)
       }, 1000)
+    },
+    // 监听歌曲是否播放完毕
+    listenerMusicState () {
+      setTimeout(() => {
+        document.querySelector('#audio').onended = () => {
+          // 获取列表状态
+          const listState = this.$store.state.listState
+          if (listState === 1) {
+            const newIndex = this.index + 1
+            const newId = this.musicList[newIndex].id
+            this.$store.commit('changeMusicId', newId)
+            this.$store.commit('changeIndex', newIndex)
+          } else if (listState === 2) {
+            this.play()
+          } else {
+            // 获取歌曲列表总长度
+            const length = this.musicList.length
+            // 得到一个随机数
+            const random = Math.floor(Math.random() * length)
+            // 根据随机数取到新 id
+            const newId = this.musicList[random].id
+            this.$store.commit('changeMusicId', newId)
+            this.$store.commit('changeIndex', random)
+          }
+        }
+      }, 2000)
     }
   }
 }
@@ -309,6 +349,12 @@ export default {
           }
         }
       }
+    }
+  }
+  .active{
+    color: #E20000;
+    .author{
+      color: #E20000;
     }
   }
 </style>
