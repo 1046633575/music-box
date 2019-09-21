@@ -45,6 +45,7 @@
 import { Toast } from 'mint-ui'
 import topBar from '../components/TopBar'
 export default {
+  name: 'songList',
   data () {
     return {
       playList: [],
@@ -76,7 +77,8 @@ export default {
     changeVuex (id, i) {
       this.$store.commit('changeMusicId', id)
       this.$store.commit('changeIndex', i)
-      this.$store.commit('changeMusicList', this.playList)
+      this.$store.commit('changeMusicList', this.playList.tracks)
+      this.$store.commit('changeAuthorFlag', true)
     }
   }
 }

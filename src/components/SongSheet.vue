@@ -92,7 +92,6 @@ export default {
     },
     // 跳转到歌曲列表页
     goToSongList (id) {
-      console.log(id)
       this.$router.push({ path: '/songList', query: { id: id } })
     }
   }

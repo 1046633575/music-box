@@ -36,12 +36,12 @@
           </div>
           <div class="bottom">
             <div class="bottom-list">
-              <div class="list-item d-flex ai-center text-black mb-3" v-for="(item, i) in musicList.tracks" :key="item.id">
+              <div class="list-item d-flex ai-center text-black mb-3" v-for="(item, i) in musicList" :key="item.id">
                 <div class="left">{{i+1}}</div>
                 <div class="center h-100 d-flex ai-center jc-between pr-4">
                   <div class="first w-100 h-100 d-flex flex-column jc-around ">
                     <div class="name w-100 text-ellipsis-1">{{item.name}}</div>
-                    <div class="author w-100 fs-xs text-grey-3 text-ellipsis-1">{{item.ar[0].name}}</div>
+                    <div class="author w-100 fs-xs text-grey-3 text-ellipsis-1">{{authorFlag ? item.ar[0].name : item.artists[0].name}}</div>
                   </div>
                 </div>
                 <div class="second"><i class="iconfont icon-xinxipt" style="font-size: 24px;"></i></div>
@@ -69,7 +69,9 @@ export default {
       // 控制遮挡背景的显示与隐藏
       musicListFlag: false,
       // 控制底部播放栏的显示与隐藏
-      footerFlag: true
+      footerFlag: true,
+      // 控制底部列表显示歌手名称
+      authorFlag: this.$store.state.authorFlag
     }
   },
   created () {
@@ -89,6 +91,9 @@ export default {
     },
     getPlayFlag () {
       return this.$store.state.playFlag
+    },
+    getAuthorFlag () {
+      return this.$store.state.authorFlag
     }
   },
   watch: {
@@ -112,6 +117,9 @@ export default {
       } else {
         this.$store.commit('changeFooterFlag', true)
       }
+    },
+    getAuthorFlag (newVal) {
+      this.authorFlag = newVal
     }
   },
   methods: {
@@ -185,14 +193,11 @@ export default {
     },
     // 获取当前路由，判断如果是 /play 就隐藏底部播放栏
     getRoutePath () {
-      console.log(this.$route.path)
       // 判断路由状态，如果到了播放页面，隐藏底部播放栏，如果没到不隐藏
       if (this.$route.path.indexOf('/play') !== -1) {
         this.$store.commit('changeFooterFlag', false)
-        console.log(this.$store.state.footerFlag)
       } else {
         this.$store.commit('changeFooterFlag', true)
-        console.log(this.$store.state.footerFlag)
       }
     },
     // 在vuex 中存入歌曲数据

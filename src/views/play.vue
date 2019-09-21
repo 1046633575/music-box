@@ -158,7 +158,6 @@ export default {
   methods: {
     // 第一次进入时调用 cd 旋转
     changeCD () {
-      console.log(this.$store.state.playFlag + '----=')
       setTimeout(() => {
         // 调用cd旋转方法
         this.rotateImg(this.$store.state.playFlag)
@@ -239,14 +238,10 @@ export default {
     // cd图片旋转
     rotateImg (flag) {
       if (flag === true) {
-        console.log(flag)
         const rotateImg = document.querySelector('#img')
-        console.log(rotateImg)
         rotateImg.style.animationPlayState = "paused"
       } else {
-        console.log(flag)
         const rotateImg = document.querySelector('#img')
-        console.log(rotateImg)
         rotateImg.style.animationPlayState = "running"
       }
     }
