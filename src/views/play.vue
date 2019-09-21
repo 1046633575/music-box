@@ -7,7 +7,7 @@
     <div class="play-top d-flex jc-center ai-center">
       <div class="box d-flex jc-center ai-center b-radius-50">
         <div class="box-top"></div>
-        <img class="b-radius-50" :src="music.al.picUrl" alt="">
+        <img id="img" ref="img" class="b-radius-50" :src="music.al.picUrl" alt="">
       </div>
     </div>
     <!--歌词-->
@@ -39,12 +39,12 @@
         <i class="iconfont icon-caidan"></i>
       </div>
       <div class="progresBar d-flex jc-between ai-center text-grey-1 fs-sm">
-        <div class="left">01:23</div>
+        <div class="left">{{ this.$store.state.musicTime | currentFormat }}</div>
         <div class="center">
           <div class="bar" :style="myProgress"></div>
           <div class="round"></div>
         </div>
-        <div class="right">03:39</div>
+        <div class="right">{{ music.dt | dateFormat }}</div>
       </div>
     </div>
   </div>
@@ -83,6 +83,15 @@ export default {
     this.getMusicIndex()
     this.getMusicLyric(this.$store.state.musicId)
   },
+  mounted () {
+    /**
+     * CD 旋转思路:
+     * 1.页面加载后调用旋转方法，因为第一次进入页面时，dom还未创建，所以在 mounted 中调用
+     * 2.播放暂停后调用旋转方法，用来在播放页控制旋转
+     * 3.进入播放页后调用旋转方法，用于在外面改变了播放状态，进入后要调用旋转方法
+     */
+    this.changeCD()
+  },
   // 监听 vuex 的变化
   computed: {
     getStoreId () {
@@ -90,6 +99,10 @@ export default {
     },
     getMusicPlayTime () {
       return this.$store.state.musicTime
+    },
+    // 监听播放状态
+    listenPlayFlag () {
+      return this.$store.state.playFlag
     }
   },
   watch: {
@@ -100,7 +113,6 @@ export default {
       this.getMusicLyric(newVal)
     },
     getMusicPlayTime (time) {
-      console.log(time)
       const longTime = this.music.dt / 1000
       const percentage = parseInt(time / longTime * 100)
       this.myProgress = { width: percentage + '%' }
@@ -118,25 +130,45 @@ export default {
         }
         // 第二行歌词
         this.secondLrc = this.lrc[parseInt(time)]
-        console.log(this.lrc[parseInt(time)])
         // 第三行歌词
         const newTime = parseInt(time) + 1
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 60; i++) {
           if (this.lrc[newTime + i] !== undefined && this.lrc[newTime + i] !== '') {
             this.lastLrc = this.lrc[newTime + i]
             break
           }
         }
       }
+    },
+    listenPlayFlag (flag) {
+      this.flag = this.$store.state.playFlag
+      // 调用cd旋转方法
+      this.rotateImg(flag)
+    },
+    // 判断路由状态，如果到了播放页面，隐藏底部播放栏，如果没到不隐藏
+    $route (to, from) {
+      if (to.path.indexOf('/play') !== -1) {
+        setTimeout(() => {
+          // 调用cd旋转方法
+          this.rotateImg(this.$store.state.playFlag)
+        }, 100)
+      }
     }
   },
   methods: {
+    // 第一次进入时调用 cd 旋转
+    changeCD () {
+      console.log(this.$store.state.playFlag + '----=')
+      setTimeout(() => {
+        // 调用cd旋转方法
+        this.rotateImg(this.$store.state.playFlag)
+      }, 100)
+    },
     // 获取歌曲详情
     getMusicDetail (id) {
       this.$http.get('http://47.95.5.96:3000/song/detail?ids=' + id).then(res => {
         if (res.data.code === 200) {
           this.music = res.data.songs[0]
-          console.log(this.music)
         }
       }).catch(() => {
         Toast({
@@ -160,7 +192,6 @@ export default {
         if (res.data.code === 200) {
           const oldLrc = res.data.lrc.lyric
           this.lrc = this.parseLyric(oldLrc)
-          console.log(this.lrc)
         }
       })
     },
@@ -204,6 +235,33 @@ export default {
         this.flag = this.$store.state.playFlag
         document.querySelector('#audio').pause()
       }
+    },
+    // cd图片旋转
+    rotateImg (flag) {
+      if (flag === true) {
+        console.log(flag)
+        const rotateImg = document.querySelector('#img')
+        console.log(rotateImg)
+        rotateImg.style.animationPlayState = "paused"
+      } else {
+        console.log(flag)
+        const rotateImg = document.querySelector('#img')
+        console.log(rotateImg)
+        rotateImg.style.animationPlayState = "running"
+      }
+    }
+  },
+  filters: {
+    // 使用过滤器将毫秒转换成分钟
+    dateFormat: function (val) {
+      const minute = parseInt(val / 1000 / 60)
+      const second = parseInt(val % 60000 / 1000) < 10 ? '0' + parseInt(val % 60000 / 1000) : parseInt(val % 60000 / 1000)
+      return minute + ':' + second
+    },
+    currentFormat: function (val) {
+      const minute = parseInt(val / 60)
+      const second = parseInt(val % 60) < 10 ? '0' + parseInt(val % 60) : parseInt(val % 60)
+      return minute + ':' + second
     }
   }
 }
@@ -245,6 +303,8 @@ export default {
         background-size: cover;
         img{
           width: 64%;
+          animation: rotate 25s linear infinite;
+          animation-play-state:paused;/*暂停动画*/
         }
         .box-top{
           width: 84px;
@@ -320,6 +380,14 @@ export default {
           }
         }
       }
+    }
+  }
+  @keyframes rotate{
+    0%{
+      transform: rotate(0);
+    }
+    100%{
+      transform: rotate(360deg);
     }
   }
 </style>
