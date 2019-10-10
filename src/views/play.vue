@@ -21,9 +21,9 @@
     <!--底部控制栏-->
     <div class="play-bottom d-flex jc-around ai-center text-white">
       <div @click="changeListState" class="state">
-        <i v-show="listState === 1 ? true : false" class="iconfont icon-xunhuanbofang"></i>
-        <i v-show="listState === 2 ? true : false" class="iconfont icon-danquxunhuan"></i>
-        <i v-show="listState === 3 ? true : false" class="iconfont icon-suijibofang"></i>
+        <i v-show="listState === 1" class="iconfont icon-xunhuanbofang"></i>
+        <i v-show="listState === 2" class="iconfont icon-danquxunhuan"></i>
+        <i v-show="listState === 3" class="iconfont icon-suijibofang"></i>
       </div>
       <div @click="prevMusic" class="left">
         <i class="iconfont icon-shangyiqu"></i>

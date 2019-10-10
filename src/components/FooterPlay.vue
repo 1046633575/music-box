@@ -25,9 +25,15 @@
         <div class="box"></div>
         <div class="box2 flex-1">
           <div class="top d-flex ai-center jc-between fs-md mb-3">
-            <div class="left d-flex ai-center">
-              <div class="d-flex ai-center">
+            <div class="left d-flex ai-center" @click="changeListState">
+              <div class="d-flex ai-center" v-show="listState === 1">
                 <i class="iconfont icon-xunhuanbofang" style="font-size: 16px;"></i>&nbsp;列表循环
+              </div>
+              <div class="d-flex ai-center" v-show="listState === 2">
+                <i class="iconfont icon-danquxunhuan" style="font-size: 16px;"></i>&nbsp;单曲循环
+              </div>
+              <div class="d-flex ai-center" v-show="listState === 3">
+                <i class="iconfont icon-suijibofang" style="font-size: 16px;"></i>&nbsp;随机播放
               </div>
             </div>
             <div @click="closeList" class="right d-flex ai-center jc-center">
@@ -64,6 +70,7 @@ export default {
       flag: this.$store.state.playFlag,
       index: this.$store.state.index,
       musicId: this.$store.state.musicId,
+      listState: this.$store.state.listState,
       // 播放按钮的切换
       startFlag: false,
       musicList: this.$store.state.musicList,
@@ -100,6 +107,9 @@ export default {
     },
     getAuthorFlag () {
       return this.$store.state.authorFlag
+    },
+    getListState () {
+      return this.$store.state.listState
     }
   },
   watch: {
@@ -126,6 +136,9 @@ export default {
     },
     getAuthorFlag (newVal) {
       this.authorFlag = newVal
+    },
+    getListState (newVal) {
+      this.listState = newVal
     }
   },
   methods: {
@@ -246,6 +259,33 @@ export default {
           }
         }
       }, 2000)
+    },
+    // 点击改变列表播放状态
+    changeListState () {
+      // 列表播放状态
+      let listState = this.$store.state.listState
+      if (listState === 1) {
+        Toast({
+          message: '单曲循环',
+          position: 'bottom',
+          duration: 1500
+        })
+        this.$store.commit('changeListState', listState + 1)
+      } else if (listState === 2) {
+        Toast({
+          message: '随机播放',
+          position: 'bottom',
+          duration: 1500
+        })
+        this.$store.commit('changeListState', listState + 1)
+      } else {
+        Toast({
+          message: '列表循环',
+          position: 'bottom',
+          duration: 1500
+        })
+        this.$store.commit('changeListState', 1)
+      }
     }
   }
 }
