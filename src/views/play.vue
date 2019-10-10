@@ -39,9 +39,10 @@
       <div @click="openList" class="menu">
         <i class="iconfont icon-caidan"></i>
       </div>
+      <!--播放进度-->
       <div class="progresBar d-flex jc-between ai-center text-grey-1 fs-sm">
         <div class="left">{{ this.$store.state.musicTime | currentFormat }}</div>
-        <div class="center">
+        <div class="center" id="progres" @click="changeProgresBar">
           <div class="bar" :style="myProgress"></div>
           <div class="round"></div>
         </div>
@@ -329,6 +330,7 @@ export default {
         }
       }
     },
+    // 改变列表播放状态
     changeListState () {
       // 列表播放状态
       let listState = this.$store.state.listState
@@ -354,6 +356,22 @@ export default {
         })
         this.$store.commit('changeListState', 1)
       }
+    },
+    // 改变进度条进度
+    changeProgresBar (e) {
+      const audio = document.querySelector('#audio')
+      const progres = document.querySelector('#progres')
+      // 进度条据左边距离
+      let leftWidth = progres.offsetLeft
+      // 进度条总长度
+      const width = progres.offsetWidth
+      // 点击位置距左边距离
+      const clientX = e.clientX
+      // 点击位置和总进度比率
+      const ratio = (clientX - leftWidth) / width
+      // 比率对应播放时间
+      const currentTime = Math.floor(this.music.dt * ratio / 1000)
+      audio.currentTime = currentTime
     }
   },
   filters: {
