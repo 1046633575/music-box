@@ -71,7 +71,7 @@ export default {
       height: 100px;
     }
     .item-right{
-      width: 80%;
+      width: 75%;
     }
     .recommend-list{
       .list-item{

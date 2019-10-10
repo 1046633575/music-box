@@ -12,11 +12,12 @@
     </div>
     <!--歌词-->
     <div class="play-center ">
-      <div class="d-flex flex-column jc-center">
+      <div class="d-flex flex-column jc-center" v-show="!noLrc">
         <div class="first text-center text-grey-1">{{firstLrc}}</div>
         <div class="second text-center my-5 text-white fs-lg">{{secondLrc}}</div>
         <div class="last text-center text-grey-1">{{lastLrc}}</div>
       </div>
+      <div class="text-white fs-lg text-center pt-5" v-show="noLrc">纯音乐，无歌词</div>
     </div>
     <!--底部控制栏-->
     <div class="play-bottom d-flex jc-around ai-center text-white">
@@ -73,7 +74,9 @@ export default {
       // 第三行歌词
       lastLrc: '',
       // 列表状态 1：顺序  2：单曲  3：随机
-      listState: this.$store.state.listState
+      listState: this.$store.state.listState,
+      // 当纯音乐无歌词时显示
+      noLrc: false
     }
   },
   components: {
@@ -200,8 +203,14 @@ export default {
     getMusicLyric (id) {
       this.$http.get('http://47.95.5.96:3000/lyric?id=' + id).then(res => {
         if (res.data.code === 200) {
-          const oldLrc = res.data.lrc.lyric
-          this.lrc = this.parseLyric(oldLrc)
+          // 如果是纯音乐则无歌词
+          if (res.data.lrc === undefined) {
+            this.noLrc = true
+          } else {
+            const oldLrc = res.data.lrc.lyric
+            this.lrc = this.parseLyric(oldLrc)
+            this.noLrc = false
+          }
         }
       })
     },
