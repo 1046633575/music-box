@@ -5,8 +5,8 @@
     <div class="official-list w-100">
       <div @click="goRankList(item.id)" class="list-item w-100 d-flex py-2" v-for="item in rankList" :key="item.id">
         <img class="list-item-img b-radius-6" v-lazy="item.coverImgUrl" alt="">
-        <div class="item-right pl-3 py-1 d-flex flex-column jc-between">
-          <p class="text-black" v-for="(song,i) in item.tracks" :key="i">{{song.first}} - {{song.second}}</p>
+        <div class="item-right over-hidden pl-3 py-1 d-flex flex-column jc-between">
+          <p class="text-black text-ellipsis-1" v-for="(song,i) in item.tracks" :key="i">{{song.first}} - {{song.second}}</p>
         </div>
       </div>
     </div>
@@ -69,6 +69,9 @@ export default {
     .list-item-img{
       width: 100px;
       height: 100px;
+    }
+    .item-right{
+      width: 80%;
     }
     .recommend-list{
       .list-item{
