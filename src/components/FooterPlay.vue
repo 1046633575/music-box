@@ -110,6 +110,9 @@ export default {
     },
     getListState () {
       return this.$store.state.listState
+    },
+    getMusicList () {
+      return this.$store.state.musicList
     }
   },
   watch: {
@@ -117,7 +120,6 @@ export default {
       this.startFlag = true
       this.getMusicDetail(newVal)
       this.getMusicUrl(newVal)
-      this.getMusicList()
       this.getMusicIndex()
     },
     getFooterFlag (newVal) {
@@ -139,6 +141,9 @@ export default {
     },
     getListState (newVal) {
       this.listState = newVal
+    },
+    getMusicList (newVal) {
+      this.musicList = newVal
     }
   },
   methods: {
@@ -202,10 +207,6 @@ export default {
       this.musicListFlag = false
       document.querySelector('.list-content').style.top = '100%'
     },
-    // 获取列表数据
-    getMusicList () {
-      this.musicList = this.$store.state.musicList
-    },
     getMusicIndex () {
       this.index = this.$store.state.index
     },
@@ -238,24 +239,34 @@ export default {
     listenerMusicState () {
       setTimeout(() => {
         document.querySelector('#audio').onended = () => {
-          // 获取列表状态
-          const listState = this.$store.state.listState
-          if (listState === 1) {
-            const newIndex = this.index + 1
-            const newId = this.musicList[newIndex].id
+          // 获取是否有下一曲播放
+          const nextMusicFlag = this.$store.state.nextMusicFlag
+          if (nextMusicFlag) {
+            const newIndex = this.$store.state.index + 1
+            const newId = this.$store.state.musicList[newIndex].id
             this.$store.commit('changeMusicId', newId)
             this.$store.commit('changeIndex', newIndex)
-          } else if (listState === 2) {
-            this.play()
+            this.$store.commit('changeNextMusicFlag', false)
           } else {
-            // 获取歌曲列表总长度
-            const length = this.musicList.length
-            // 得到一个随机数
-            const random = Math.floor(Math.random() * length)
-            // 根据随机数取到新 id
-            const newId = this.musicList[random].id
-            this.$store.commit('changeMusicId', newId)
-            this.$store.commit('changeIndex', random)
+            // 获取列表状态
+            const listState = this.$store.state.listState
+            if (listState === 1) {
+              const newIndex = this.index + 1
+              const newId = this.musicList[newIndex].id
+              this.$store.commit('changeMusicId', newId)
+              this.$store.commit('changeIndex', newIndex)
+            } else if (listState === 2) {
+              this.play()
+            } else {
+              // 获取歌曲列表总长度
+              const length = this.musicList.length
+              // 得到一个随机数
+              const random = Math.floor(Math.random() * length)
+              // 根据随机数取到新 id
+              const newId = this.musicList[random].id
+              this.$store.commit('changeMusicId', newId)
+              this.$store.commit('changeIndex', random)
+            }
           }
         }
       }, 2000)

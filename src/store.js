@@ -22,7 +22,9 @@ export default new Vuex.Store({
     // 列表的显示与隐藏
     listFlag: false,
     // 列表播放状态，1：列表顺序 2：单曲循环 3：随机播放
-    listState: 1
+    listState: 1,
+    // 控制下一曲播放，当添加了下一曲时变为 true
+    nextMusicFlag: false
   },
   mutations: {
     changeMusicId (state, id) {
@@ -51,6 +53,9 @@ export default new Vuex.Store({
     },
     changeListState (state, num) {
       this.state.listState = num
+    },
+    changeNextMusicFlag (state, flag) {
+      this.state.nextMusicFlag = flag
     }
   }
 })

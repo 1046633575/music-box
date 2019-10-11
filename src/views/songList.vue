@@ -24,7 +24,7 @@
       <div class="bottom-fa flex-1">
         <div class="bottom">
           <div class="list pt-3">
-            <div class="list-item d-flex ai-center text-black mb-3" v-for="(item, i) in playList.tracks" :key="item.id">
+            <div class="list-item d-flex ai-center text-black mb-3" v-for="(item, i) in musicList" :key="item.id">
               <div class="left">{{i+1}}</div>
               <div @click="changeVuex(item.id,i)" class="center h-100 d-flex ai-center jc-between">
                 <div class="first w-100 h-100 d-flex flex-column jc-around ">
@@ -32,11 +32,15 @@
                   <div class="author w-100 fs-xs text-grey-3 text-ellipsis-1">{{item.ar[0].name}}</div>
                 </div>
               </div>
-              <div class="second"><i class="iconfont icon-xinxipt" style="font-size: 24px;"></i></div>
+              <div class="second" @click="openMenu(i)"><i class="iconfont icon-xinxipt" style="font-size: 24px;"></i></div>
             </div>
           </div>
         </div>
       </div>
+      <mt-actionsheet
+        :actions="actions"
+        v-model="flag">
+      </mt-actionsheet>
     </div>
   </div>
 </template>
@@ -48,8 +52,23 @@ export default {
   name: 'songList',
   data () {
     return {
+      // 控制菜单的显示与隐藏
+      flag: false,
       playList: [],
-      title: '歌曲列表'
+      musicList: [],
+      title: '歌曲列表',
+      // 菜单项配置
+      actions: [
+        {
+          name: '下一曲播放',
+          method: this.nextMusic
+        },
+        {
+          name: '收藏',
+          method: this.collection
+        }
+      ],
+      index: 0
     }
   },
   components: {
@@ -58,12 +77,23 @@ export default {
   created () {
     this.getSongSheetDetail(this.$route.query.id)
   },
+  computed: {
+    getMusicList () {
+      return this.$store.state.musicList
+    }
+  },
+  watch: {
+    getMusicList (newVal) {
+      this.musicList = newVal
+    }
+  },
   methods: {
     // 获取歌单详情
     getSongSheetDetail (id) {
       this.$http.get('/playlist/detail?id=' + id).then(res => {
         if (res.data.code === 200) {
           this.playList = res.data.playlist
+          this.musicList = res.data.playlist.tracks
         }
       }).catch(() => {
         Toast({
@@ -77,8 +107,45 @@ export default {
     changeVuex (id, i) {
       this.$store.commit('changeMusicId', id)
       this.$store.commit('changeIndex', i)
-      this.$store.commit('changeMusicList', this.playList.tracks)
+      this.$store.commit('changeMusicList', this.musicList)
       this.$store.commit('changeAuthorFlag', true)
+    },
+    // 打开菜单
+    openMenu (i) {
+      this.flag = true
+      this.index = i
+    },
+    // 下一曲播放
+    /**
+     * 1.调整列表，把当前点击的歌曲移动到正在播放的歌曲后面
+     * 2.vuex 中创建布尔值默认 false
+     * 3.歌曲播放完后如果 vuex 中布尔值为 true，直接播放列表中的下一曲，播放后将 vuex 中布尔值改为 false
+     */
+    nextMusic () {
+      // 获取当前播放歌曲索引
+      const index = this.$store.state.index
+      // 获取歌曲列表
+      let musicList = this.$store.state.musicList
+      // 要移动的歌曲索引
+      const i = this.index
+      // 要移动的歌曲项
+      const music = musicList[i]
+      // 删除歌曲项
+      musicList.splice(i, 1)
+      if (i > index) {
+        // 添加到当前播放处
+        musicList.splice(index + 1, 0, music)
+      } else {
+        musicList.splice(index, 0, music)
+        // 同步index
+        this.$store.commit('changeIndex', index - 1)
+      }
+      // 同步 vuex
+      this.$store.commit('changeMusicList', musicList)
+      this.$store.commit('changeNextMusicFlag', true)
+    },
+    collection () {
+      console.log('收藏成功')
     }
   }
 }
