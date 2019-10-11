@@ -36,7 +36,7 @@
                 <i class="iconfont icon-suijibofang" style="font-size: 16px;"></i>&nbsp;随机播放
               </div>
             </div>
-            <div @click="closeList" class="right d-flex ai-center jc-center">
+            <div @click="closeList" class="right d-flex ai-center jc-end">
               <i class="iconfont icon-guanbi" style="font-size: 16px;"></i>&nbsp;关闭
             </div>
           </div>
@@ -50,7 +50,7 @@
                     <div class="author w-100 fs-xs text-grey-3 text-ellipsis-1">{{authorFlag ? item.ar[0].name : item.artists[0].name}}</div>
                   </div>
                 </div>
-                <div class="second"><i class="iconfont icon-xinxipt" style="font-size: 24px;"></i></div>
+                <div class="second h-100 d-flex jc-center ai-center" @click="deleteListMusic(i)"><i class="iconfont icon--close" style="font-size: 16px; color: #979797;"></i></div>
               </div>
             </div>
           </div>
@@ -285,6 +285,40 @@ export default {
           duration: 1500
         })
         this.$store.commit('changeListState', 1)
+      }
+    },
+    // 从列表中删除歌曲
+    deleteListMusic (i) {
+      // 从列表中删除此项
+      this.musicList.splice(i, 1)
+      // 同步 vuex
+      this.$store.commit('changeMusicList', this.musicList)
+      // 当删除的是当前播放的歌曲时
+      if (i === this.index) {
+        // 如果当前播放状态是随机播放，就需要随机，如果是其他的直接播放下一曲
+        if (this.$store.state.listState === 3) {
+          // 获取歌曲列表总长度
+          const length = this.musicList.length
+          // 得到一个随机数
+          const random = Math.floor(Math.random() * length)
+          // 根据随机数取到新 id
+          const newId = this.musicList[random].id
+          this.$store.commit('changeMusicId', newId)
+          this.$store.commit('changeIndex', random)
+        } else {
+          if (i > this.musicList.length) {
+            Toast({
+              message: '已经到底了',
+              position: 'bottom',
+              duration: 2000
+            })
+          } else {
+            // 歌曲 id
+            const newId = this.musicList[i].id
+            this.$store.commit('changeMusicId', newId)
+            this.$store.commit('changeIndex', i)
+          }
+        }
       }
     }
   }

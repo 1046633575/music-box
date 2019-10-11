@@ -123,6 +123,13 @@
       "font_class": "danquxunhuan",
       "unicode": "e6d6",
       "unicode_decimal": 59094
+    },
+    {
+      "icon_id": "10566464",
+      "name": "search close",
+      "font_class": "-close",
+      "unicode": "e50a",
+      "unicode_decimal": 58634
     }
   ]
 }
