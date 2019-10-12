@@ -32,15 +32,11 @@
                   <div class="author w-100 fs-xs text-grey-3 text-ellipsis-1">{{item.ar[0].name}}</div>
                 </div>
               </div>
-              <div class="second" @click="openMenu(i)"><i class="iconfont icon-xinxipt" style="font-size: 24px;"></i></div>
+              <div class="second" @click="collection(i)"><i class="iconfont icon-xihuan-wangyiicon" :class="item.id | isCollection" style="font-size: 24px;"></i></div>
             </div>
           </div>
         </div>
       </div>
-      <mt-actionsheet
-        :actions="actions"
-        v-model="flag">
-      </mt-actionsheet>
     </div>
   </div>
 </template>
@@ -52,27 +48,26 @@ export default {
   name: 'songList',
   data () {
     return {
-      // 控制菜单的显示与隐藏
-      flag: false,
       playList: [],
       musicList: [],
       title: '歌曲列表',
-      // 菜单项配置
-      actions: [
-        {
-          name: '下一曲播放',
-          method: this.nextMusic
-        },
-        {
-          name: '收藏',
-          method: this.collection
-        }
-      ],
-      index: 0
+      collectionList: []
     }
   },
   components: {
     topBar
+  },
+  filters: {
+    isCollection: (val) => {
+      const list = JSON.parse(localStorage.getItem('collectionList'))
+      if (list) {
+        for (let i in list) {
+          if (list[i].id === val) {
+            return 'active'
+          }
+        }
+      }
+    }
   },
   created () {
     this.getSongSheetDetail(this.$route.query.id)
@@ -80,11 +75,17 @@ export default {
   computed: {
     getMusicList () {
       return this.$store.state.musicList
+    },
+    getCollectionList () {
+      return JSON.parse(localStorage.getItem('collectionList'))
     }
   },
   watch: {
     getMusicList (newVal) {
       this.musicList = newVal
+    },
+    getCollectionList (newVal) {
+      this.collectionList = newVal
     }
   },
   methods: {
@@ -110,42 +111,28 @@ export default {
       this.$store.commit('changeMusicList', this.musicList)
       this.$store.commit('changeAuthorFlag', true)
     },
-    // 打开菜单
-    openMenu (i) {
-      this.flag = true
-      this.index = i
-    },
-    // 下一曲播放
-    /**
-     * 1.调整列表，把当前点击的歌曲移动到正在播放的歌曲后面
-     * 2.vuex 中创建布尔值默认 false
-     * 3.歌曲播放完后如果 vuex 中布尔值为 true，直接播放列表中的下一曲，播放后将 vuex 中布尔值改为 false
-     */
-    nextMusic () {
-      // 获取当前播放歌曲索引
-      const index = this.$store.state.index
-      // 获取歌曲列表
-      let musicList = this.$store.state.musicList
-      // 要移动的歌曲索引
-      const i = this.index
-      // 要移动的歌曲项
-      const music = musicList[i]
-      // 删除歌曲项
-      musicList.splice(i, 1)
-      if (i > index) {
-        // 添加到当前播放处
-        musicList.splice(index + 1, 0, music)
+    // 收藏歌曲
+    collection (i) {
+      // 将歌曲添加到 localStorage
+      let list = JSON.parse(localStorage.getItem('collectionList'))
+      if (list !== null) {
+        // 本地 list存在，直接添加
+        let index = list.findIndex(item => item.id === this.musicList[i].id)
+        if (index !== -1) {
+          list.splice(index, 1)
+        } else {
+          list.push(this.musicList[i])
+        }
+        localStorage.setItem('collectionList', JSON.stringify(list))
       } else {
-        musicList.splice(index, 0, music)
-        // 同步index
-        this.$store.commit('changeIndex', index - 1)
+        // 本地 list不存在，创建一个新的 list
+        let list2 = []
+        list2.push(this.musicList[i])
+        localStorage.setItem('collectionList', JSON.stringify(list2))
       }
-      // 同步 vuex
-      this.$store.commit('changeMusicList', musicList)
-      this.$store.commit('changeNextMusicFlag', true)
-    },
-    collection () {
-      console.log('收藏成功')
+      // this.$router.go(0)
+      let path = this.$route.query.id
+      this.$router.replace({ path: '/kong', query: { 'path': path } })
     }
   }
 }
@@ -165,6 +152,9 @@ export default {
       -o-filter:blur(150px);
       position: absolute;
       top: 0;
+    }
+    .iconfont.active{
+      color: #E20000;
     }
     .content{
       width: 100%;

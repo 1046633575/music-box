@@ -239,34 +239,24 @@ export default {
     listenerMusicState () {
       setTimeout(() => {
         document.querySelector('#audio').onended = () => {
-          // 获取是否有下一曲播放
-          const nextMusicFlag = this.$store.state.nextMusicFlag
-          if (nextMusicFlag) {
-            const newIndex = this.$store.state.index + 1
-            const newId = this.$store.state.musicList[newIndex].id
+          // 获取列表状态
+          const listState = this.$store.state.listState
+          if (listState === 1) {
+            const newIndex = this.index + 1
+            const newId = this.musicList[newIndex].id
             this.$store.commit('changeMusicId', newId)
             this.$store.commit('changeIndex', newIndex)
-            this.$store.commit('changeNextMusicFlag', false)
+          } else if (listState === 2) {
+            this.play()
           } else {
-            // 获取列表状态
-            const listState = this.$store.state.listState
-            if (listState === 1) {
-              const newIndex = this.index + 1
-              const newId = this.musicList[newIndex].id
-              this.$store.commit('changeMusicId', newId)
-              this.$store.commit('changeIndex', newIndex)
-            } else if (listState === 2) {
-              this.play()
-            } else {
-              // 获取歌曲列表总长度
-              const length = this.musicList.length
-              // 得到一个随机数
-              const random = Math.floor(Math.random() * length)
-              // 根据随机数取到新 id
-              const newId = this.musicList[random].id
-              this.$store.commit('changeMusicId', newId)
-              this.$store.commit('changeIndex', random)
-            }
+            // 获取歌曲列表总长度
+            const length = this.musicList.length
+            // 得到一个随机数
+            const random = Math.floor(Math.random() * length)
+            // 根据随机数取到新 id
+            const newId = this.musicList[random].id
+            this.$store.commit('changeMusicId', newId)
+            this.$store.commit('changeIndex', random)
           }
         }
       }, 2000)

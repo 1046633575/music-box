@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="main">
-      <keep-alive exclude="songList">
+      <keep-alive exclude="songList,kong">
         <router-view></router-view>
       </keep-alive>
       <router-view name="link"></router-view>
