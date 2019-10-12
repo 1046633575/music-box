@@ -5,7 +5,7 @@
     <div class="content text-black d-flex flex-column">
       <div class="fixed">
         <!--背景-->
-        <img class="bg" src="http://p1.music.126.net/EBRqPmY8k8qyVHyF8AyjdQ==/18641120139148117.jpg" alt="">
+        <img class="bg" src="../assets/image/collection.png" alt="">
         <div class="dv"></div>
         <div class="top d-flex jc-between fs-xl">
           <div class="img">
