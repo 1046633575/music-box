@@ -7,6 +7,7 @@ import songList from './views/songList'
 import play from './views/play'
 import search from './views/search'
 import kong from './views/kong'
+import collection from './views/collection'
 
 Vue.use(Router)
 
@@ -54,6 +55,11 @@ export default new Router({
     {
       path: '/kong',
       component: kong
+    },
+    {
+      path: '/collection',
+      component: collection,
+      name: collection
     }
   ]
 })
