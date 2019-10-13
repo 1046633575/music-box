@@ -28,8 +28,5 @@ npm run build
 9.歌曲收藏<br>
 
 #### 运行截图
-![p1](https://github.com/1046633575/musicBox/blob/master/img/p1.png)
-![p2](https://github.com/1046633575/musicBox/blob/master/img/p2.png)
-![p3](https://github.com/1046633575/musicBox/blob/master/img/p3.png)
-![p4](https://github.com/1046633575/musicBox/blob/master/img/p4.png)
-![p5](https://github.com/1046633575/musicBox/blob/master/img/p5.png)
+![p1](https://github.com/1046633575/music-box/blob/master/src/assets/image/p1.png)
+![p2](https://github.com/1046633575/music-box/blob/master/src/assets/image/p2.png)
