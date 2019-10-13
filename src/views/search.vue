@@ -8,19 +8,31 @@
         <header class="w-100 d-flex ai-center bg-grey-2 pl-3 b-radius-32" style="background-color: #f4f0f0">
           <i class="iconfont icon-sousuo"></i>
           <input v-model="key" class="flex-1 h-100 bg-grey-2 b-radius-32" style="background-color: #f4f0f0" autofocus type="text" placeholder="请输入歌手或歌曲">
+          <i class="iconfont icon--close" @click="clearInput" v-show="!hotListFlag"></i>
         </header>
       </div>
     </div>
-    <div class="list pt-3">
-      <div class="list-item d-flex ai-center text-black mb-3" v-for="(item, i) in songList" :key="item.id">
-        <div class="left">{{i+1}}</div>
-        <div @click="changeVuex(item.id,i)" class="center h-100 d-flex ai-center jc-between">
-          <div class="first w-100 h-100 d-flex flex-column jc-around ">
-            <div class="name w-100 text-ellipsis-1">{{item.name}}</div>
-            <div class="author w-100 fs-xs text-grey-3 text-ellipsis-1">{{item.artists[0].name}}</div>
+    <!--热搜列表-->
+    <div class="hotList pt-3" v-show="hotListFlag">
+      <div class="first w-100 ">
+        <div class="name w-100 text-ellipsis-1 fs-lg pt-1 pb-3 pl-3">热门搜索</div>
+      </div>
+      <div class="list-item d-flex ai-center text-black mb-3" v-for="(item, i) in hotList" :key="item.id">
+        <div @click="hotSearch(item.first)" class="center h-100 d-flex ai-center jc-between">
+          <div class="first w-100 h-100 d-flex flex-column jc-around pl-3">
+            <div class="name w-100 text-ellipsis-1">{{item.first}}</div>
           </div>
         </div>
-        <div class="second"><i class="iconfont icon-xinxipt" style="font-size: 24px;"></i></div>
+      </div>
+    </div>
+    <!--搜索到的列表-->
+    <div class="list pt-3" v-show="!hotListFlag">
+      <div class="list-item d-flex ai-center text-black mb-3" v-for="(item, i) in songList" :key="item.id">
+        <div class="left">{{i+1}}</div>
+        <div @click="changeVuex(item.id,i)" class="center h-100 d-flex ai-center">
+          <div class="name text-ellipsis-1">{{item.name}}</div>
+          <div class="author fs-xs text-grey-3 text-ellipsis-1"> -- {{item.artists[0].name}}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -33,11 +45,19 @@ export default {
     return {
       key: '',
       time: null,
-      songList: []
+      // 搜索到的歌曲列表
+      songList: [],
+      // 热搜列表
+      hotList: [],
+      // 热搜列表的显示与隐藏
+      hotListFlag: true
     }
   },
   components: {
     TopBar
+  },
+  created () {
+    this.getHotList()
   },
   watch: {
     key: function (newVal) {
@@ -47,6 +67,11 @@ export default {
   methods: {
     // 获取搜索内容，函数节流
     getSearch (key) {
+      if (key === '') {
+        this.hotListFlag = true
+      } else {
+        this.hotListFlag = false
+      }
       clearTimeout(this.time)
       this.time = setTimeout(() => {
         this.$http.get('/search?keywords=%20' + key).then(res => {
@@ -62,6 +87,22 @@ export default {
       this.$store.commit('changeIndex', i)
       this.$store.commit('changeMusicList', this.songList)
       this.$store.commit('changeAuthorFlag', false)
+    },
+    // 获取热门搜索列表
+    getHotList () {
+      this.$http.get('/search/hot').then(res => {
+        if (res.data.code === 200) {
+          this.hotList = res.data.result.hots
+        }
+      })
+    },
+    // 搜索热门歌曲
+    hotSearch (key) {
+      this.key = key
+    },
+    // 清空搜索框
+    clearInput () {
+      this.key = ''
     }
   }
 }
@@ -87,19 +128,20 @@ export default {
         height: 40px;
         i{
           font-size: 26px;
+          &.icon--close{
+            font-size: 16px;
+            margin-right: 10px;
+          }
         }
       }
     }
-    .list{
+    .hotList{
       width: 100%;
       height: 85%;
-      -webkit-border-radius: 14px;
-      -moz-border-radius: 14px;
-      border-radius: 14px;
       overflow: scroll;
       .list-item{
         width: 100%;
-        height: 50px;
+        height: 35px;
         .left{
           width: 10%;
           text-align: center;
@@ -109,6 +151,22 @@ export default {
         }
         .second{
           width: 10%;
+        }
+      }
+    }
+    .list{
+      width: 100%;
+      height: 85%;
+      overflow: scroll;
+      .list-item{
+        width: 100%;
+        height: 50px;
+        .left{
+          width: 10%;
+          text-align: center;
+        }
+        .center{
+          width: 90%;
         }
       }
     }
