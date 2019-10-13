@@ -1,29 +1,35 @@
-# music-box
+# 音悦盒，Vue音乐播放
 
-## Project setup
-```
+### 移动端访问
+![link](https://github.com/1046633575/musicBox/blob/master/img/link.png)
+
+### 运行项目
+
+``` bash
+# 安装依赖
 npm install
-```
 
-### Compiles and hot-reloads for development
-```
+# 运行
 npm run serve
-```
 
-### Compiles and minifies for production
-```
+# 打包
 npm run build
 ```
 
-### Run your tests
-```
-npm run test
-```
+#### 功能
+1.歌单<br>
+2.排行榜<br>
+3.歌曲播放暂停<br>
+4.点击快进<br>
+5.歌词显示<br>
+6.搜索功能<br>
+7.上下曲，播放模式切换<br>
+8.播放列表<br>
+9.歌曲收藏<br>
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+#### 运行截图
+![p1](https://github.com/1046633575/musicBox/blob/master/img/p1.png)
+![p2](https://github.com/1046633575/musicBox/blob/master/img/p2.png)
+![p3](https://github.com/1046633575/musicBox/blob/master/img/p3.png)
+![p4](https://github.com/1046633575/musicBox/blob/master/img/p4.png)
+![p5](https://github.com/1046633575/musicBox/blob/master/img/p5.png)

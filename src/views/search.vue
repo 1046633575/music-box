@@ -17,7 +17,7 @@
       <div class="first w-100 ">
         <div class="name w-100 text-ellipsis-1 fs-lg pt-1 pb-3 pl-3">热门搜索</div>
       </div>
-      <div class="list-item d-flex ai-center text-black mb-3" v-for="(item, i) in hotList" :key="item.id">
+      <div class="list-item d-flex ai-center text-black mb-3" v-for="item in hotList" :key="item.id">
         <div @click="hotSearch(item.first)" class="center h-100 d-flex ai-center jc-between">
           <div class="first w-100 h-100 d-flex flex-column jc-around pl-3">
             <div class="name w-100 text-ellipsis-1">{{item.first}}</div>

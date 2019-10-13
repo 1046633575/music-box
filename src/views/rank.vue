@@ -4,7 +4,9 @@
     <h3 class="py-3">官方榜</h3>
     <div class="official-list w-100">
       <div @click="goRankList(item.id)" class="list-item w-100 d-flex py-2" v-for="item in rankList" :key="item.id">
-        <img class="list-item-img b-radius-6" v-lazy="item.coverImgUrl" alt="">
+        <div class="img">
+          <img class="list-item-img b-radius-6" v-lazy="item.coverImgUrl" alt="">
+        </div>
         <div class="item-right over-hidden pl-3 py-1 d-flex flex-column jc-between">
           <p class="text-black text-ellipsis-1" v-for="(song,i) in item.tracks" :key="i">{{song.first}} - {{song.second}}</p>
         </div>
@@ -66,9 +68,13 @@ export default {
   .rank-container{
     min-height: 800px;
     background-color: #fff;
-    .list-item-img{
+    .img{
       width: 100px;
       height: 100px;
+      .list-item-img{
+        width: 100%;
+        height: 100%;
+      }
     }
     .item-right{
       width: 75%;
