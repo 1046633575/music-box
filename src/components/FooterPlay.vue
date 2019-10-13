@@ -21,9 +21,9 @@
     </footer>
     <div class="list d-flex flex-column" v-show="musicListFlag"></div>
     <tansition name="list-content">
-      <div class="list-content">
+      <div class="list-content d-flex flex-column">
         <div class="box"></div>
-        <div class="box2 flex-1">
+        <div class="box2 flex-1 d-flex flex-column">
           <div class="top d-flex ai-center jc-between fs-md mb-3">
             <div class="left d-flex ai-center" @click="changeListState">
               <div class="d-flex ai-center" v-show="listState === 1">
@@ -40,7 +40,7 @@
               <i class="iconfont icon-guanbi" style="font-size: 16px;"></i>&nbsp;关闭
             </div>
           </div>
-          <div class="bottom">
+          <div class="bottom flex-1">
             <div class="bottom-list">
               <div class="list-item d-flex ai-center text-black mb-3" :class="$store.state.index === i ? 'active' : ''" v-for="(item, i) in musicList" :key="item.id">
                 <div class="left">{{i+1}}</div>
@@ -386,7 +386,7 @@ export default {
     }
     .box2{
       width: 100%;
-      position: fixed;
+      max-width: 640px;
       z-index: 1000;
       background-color: #fff;
       -webkit-border-radius: 14px 14px 0 0 ;
@@ -405,9 +405,8 @@ export default {
       .bottom{
         height: 500px;
         overflow: scroll;
-        padding-bottom: 50px;
         .bottom-list{
-          min-height: 800px;
+          min-height: 300px;
           .list-item{
             width: 100%;
             height: 50px;

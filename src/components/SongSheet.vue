@@ -3,16 +3,9 @@
     <!--顶部文字与选择框-->
     <div class="d-flex jc-between ai-center pb-3 px-2">
       <h3 >推荐歌单</h3>
-      <div>
-        <select>
-          <option>全部</option>
-          <option>热门</option>
-          <option>华语</option>
-        </select>
-      </div>
     </div>
     <!--歌单列表-->
-    <div class="list d-flex flex-wrap jc-between px-2" style="min-height: 1500px;" v-infinite-scroll="loadMore"
+    <div class="list d-flex flex-wrap jc-between px-2" v-infinite-scroll="loadMore"
          infinite-scroll-disabled="loading"
          infinite-scroll-distance="10">
       <div @click="goToSongList(item.id)" class="list-item pb-3 " v-for="item in songSheetList" :key="item.id">
@@ -76,7 +69,7 @@ export default {
               this.songSheetList.push(list[i])
             }
             this.loadingFlag = false
-          }, 1500)
+          }, 3000)
         }
       }).catch(() => {
         Toast({
@@ -85,10 +78,6 @@ export default {
           duration: 5000
         })
       })
-    },
-    // 选择歌单分类
-    checkSongSheet () {
-      this.sheetVisible = true
     },
     // 跳转到歌曲列表页
     goToSongList (id) {
