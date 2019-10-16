@@ -18,7 +18,7 @@ Vue.component(Actionsheet.name, Actionsheet)
 Vue.use(VueAwesomeSwiper)
 Vue.use(InfiniteScroll)
 Vue.use(Lazyload, {
-  loading: 'http://47.95.5.96:8000/picture/images/loading1.gif'
+  loading: 'http://bgwm.fun/picture/images/loading1.gif'
 })
 Vue.config.productionTip = false
 

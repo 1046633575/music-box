@@ -7,7 +7,7 @@
       <div class="searchBar">
         <header class="w-100 d-flex ai-center bg-grey-2 pl-3 b-radius-32" style="background-color: #f4f0f0">
           <i class="iconfont icon-sousuo"></i>
-          <input v-model="key" class="flex-1 h-100 bg-grey-2 b-radius-32" style="background-color: #f4f0f0" autofocus type="text" placeholder="请输入歌手或歌曲">
+          <input v-model="key" v-autofocus class="flex-1 h-100 bg-grey-2 b-radius-32" style="background-color: #f4f0f0" autofocus type="text" placeholder="请输入歌手或歌曲">
           <i class="iconfont icon--close" @click="clearInput" v-show="!hotListFlag"></i>
         </header>
       </div>
@@ -51,6 +51,15 @@ export default {
       hotList: [],
       // 热搜列表的显示与隐藏
       hotListFlag: true
+    }
+  },
+  // 自定义指令
+  directives: {
+    // 自动选中指令
+    'autofocus': {
+      inserted: function (el) {
+        el.focus()
+      }
     }
   },
   components: {
